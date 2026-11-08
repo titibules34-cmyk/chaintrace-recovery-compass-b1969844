@@ -2,6 +2,7 @@ import { HeroPicture } from "@/components/HeroPicture";
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Globe, UserSearch, Bitcoin, FileSearch, Landmark, ShieldCheck, Coins, Scale, Earth, Gavel, Wallet, Search, BadgeCheck, type LucideIcon } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/cyber-intelligence")({
   head: () => ({
@@ -51,8 +52,9 @@ function IntelligenceServices() {
   return (
     <main className="light min-h-screen bg-background text-foreground">
       <header className="fixed inset-x-0 top-4 z-50 mx-auto flex w-[min(100%-2rem,64rem)] items-center justify-between rounded-full border border-border bg-background/70 px-5 py-2.5 backdrop-blur">
-        <Link to="/" className="text-sm font-extrabold tracking-widest">
-          CYBER <span className="text-accent">JUSTICE</span>
+        <Link to="/" className="flex items-center gap-2 text-sm font-extrabold tracking-widest">
+          <BrandLogo />
+          <span>CYBER <span className="text-accent">JUSTICE</span></span>
         </Link>
         <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">&larr; Back home</Link>
       </header>

@@ -46,6 +46,7 @@ const certifications: [string, string][] = [
 ];
 
 import { ArrowLeft, ArrowRight, Scale, ShieldCheck, Search, Network, FileCheck2, Globe, DollarSign, ScanSearch, Radar, LockKeyhole, Crosshair, RotateCcw, SearchCheck, BadgeCheck } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/about-us")({
   head: () => ({
@@ -122,7 +123,7 @@ function AboutUs() {
         <Link to="/" className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[.06] px-4 py-2 text-sm font-semibold text-blue-100 transition hover:bg-white/10">
           <ArrowLeft className="h-4 w-4" /> Back to home
         </Link>
-        <span className="text-xs font-bold tracking-[.22em] text-blue-100/85">CYBER <span className="text-cyan-300">JUSTICE</span></span>
+        <span className="flex items-center gap-2 text-xs font-bold tracking-[.22em] text-blue-100/85"><BrandLogo className="h-6 w-auto" /><span>CYBER <span className="text-cyan-300">JUSTICE</span></span></span>
       </header>
 
       <section className="mx-auto w-[min(100%,64rem)] pt-8 sm:pt-10">
