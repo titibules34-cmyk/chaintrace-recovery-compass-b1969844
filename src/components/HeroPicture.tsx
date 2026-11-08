@@ -14,7 +14,7 @@ export function HeroPicture({
 }) {
   return (
     <picture>
-      <source media="(max-width: 767px)" srcSet={mobileHero} />
+      <source media="(max-width: 639px)" srcSet={mobileHero} />
       <img
         src={DESKTOP_HERO}
         alt={alt}

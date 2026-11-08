@@ -343,7 +343,7 @@ function Index() {
         <HeroPicture
           priority
           alt="Lady Justice in a blue digital investigation room"
-          className="absolute inset-x-0 top-0 -z-20 h-auto w-full md:inset-0 md:h-full md:object-cover md:object-[right_top]"
+          className="absolute inset-x-0 top-0 -z-20 h-auto w-full sm:top-20 sm:h-[calc(100%-5rem)] sm:object-cover sm:object-[right_top] sm:hero-fade"
         />
         <div className="hero-overlay absolute inset-0 -z-10" />
         <div className="mx-auto w-[min(100%-2rem,64rem)] pb-16 pt-32">
