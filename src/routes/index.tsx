@@ -24,6 +24,7 @@ import certDuns from "@/assets/certs/duns.png";
 import certDmca from "@/assets/certs/dmca.png";
 import certAcfeMember from "@/assets/certs/acfe-member.png";
 import certAuthorizeNet from "@/assets/certs/authorize-net.png";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const certifications: [string, string][] = [
   [certAcfeCfe, "Certified Fraud Examiner"],
@@ -212,8 +213,9 @@ function Index() {
   return (
     <main className="min-h-screen">
       <header className="fixed inset-x-0 top-4 z-50 mx-auto flex w-[min(100%-2rem,64rem)] items-center justify-between rounded-full border border-border bg-background/70 px-5 py-2.5 backdrop-blur">
-        <a href="#top" className="text-sm font-extrabold tracking-widest">
-          CYBER <span className="text-accent">JUSTICE</span>
+        <a href="#top" className="flex items-center gap-2 text-sm font-extrabold tracking-widest">
+          <BrandLogo />
+          <span>CYBER <span className="text-accent">JUSTICE</span></span>
         </a>
         <nav
           className="relative flex items-center gap-2 text-sm text-muted-foreground sm:gap-5"
@@ -335,7 +337,7 @@ function Index() {
                 Explore all capabilities <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
-          <a href="#contact" onMouseEnter={() => setServicesOpen(false)} onClick={() => setServicesOpen(false)} className="rounded-full bg-primary px-4 py-2 font-semibold text-primary-foreground shadow-glow transition hover:-translate-y-0.5 hover:opacity-90">Contact</a>
+          <a href="#contact" onMouseEnter={() => setServicesOpen(false)} onClick={() => setServicesOpen(false)} className="whitespace-nowrap rounded-full bg-primary px-4 py-2 font-semibold text-primary-foreground shadow-glow transition hover:-translate-y-0.5 hover:opacity-90">Contact Us</a>
         </nav>
       </header>
 
