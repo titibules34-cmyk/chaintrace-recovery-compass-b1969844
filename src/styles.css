@@ -228,13 +228,9 @@
   }
 
   #services-menu {
-    left: auto;
-    right: 0;
     width: min(27rem, calc(100vw - 1.5rem));
     max-height: min(72vh, 34rem);
     overflow-y: auto;
-    transform: none;
-    translate: none;
     background-color: color-mix(in oklab, var(--card) 96%, transparent);
   }
 
