@@ -1,3 +1,4 @@
+import { HeroPicture } from "@/components/HeroPicture";
 import { Link } from "@tanstack/react-router";
 import { Bitcoin, Blocks, ChartNoAxesCombined, Search, ShieldCheck, Wallet } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
@@ -17,7 +18,7 @@ export function CryptocurrencyTracing() {
       </header>
 
       <section className="relative isolate overflow-hidden">
-        <img src="/assets/cyber-justice-hero.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover opacity-60" />
+        <HeroPicture className="absolute inset-0 -z-20 h-full w-full object-cover object-[75%_top] opacity-60 hero-fade sm:object-[right_top]" />
         <div className="hero-overlay absolute inset-0 -z-10" />
         <div className="mx-auto w-[min(100%-2rem,64rem)] pb-16 pt-36">
           <p className="eyebrow">Blockchain intelligence · Digital asset investigations</p>

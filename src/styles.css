@@ -98,7 +98,19 @@
   --sidebar-accent-foreground: oklch(0.99 0 0);
   --sidebar-border: oklch(0.82 0.03 250 / 16%);
   --sidebar-ring: oklch(0.57 0.18 252);
-  --hero-overlay: linear-gradient(0deg, var(--background) 2%, oklch(0.18 0.05 260 / 55%) 45%, oklch(0.18 0.05 260 / 35%) 100%);
+  --hero-overlay:
+    linear-gradient(0deg, var(--background) 1%, oklch(0.18 0.05 260 / 0%) 38%),
+    linear-gradient(90deg, oklch(0.16 0.05 260 / 82%) 0%, oklch(0.18 0.05 260 / 55%) 42%, oklch(0.18 0.05 260 / 8%) 72%, oklch(0.18 0.05 260 / 0%) 100%),
+    linear-gradient(180deg, oklch(0.16 0.05 260 / 45%) 0%, oklch(0.18 0.05 260 / 0%) 22%);
+  /* Phone hero: keeps Lady Justice clear at the top, fades into the page behind the text. */
+  --hero-overlay-mobile: linear-gradient(
+    180deg,
+    oklch(0.16 0.05 260 / 50%) 0,
+    oklch(0.16 0.05 260 / 0%) 26vw,
+    oklch(0.16 0.05 260 / 0%) 78vw,
+    color-mix(in oklab, var(--background) 82%, transparent) 112vw,
+    var(--background) 172vw
+  );
   --shadow-glow: 0 10px 30px -10px color-mix(in oklab, var(--primary) 60%, transparent);
 }
 
@@ -154,6 +166,12 @@
 }
 
 @utility hero-overlay { background-image: var(--hero-overlay); }
+
+/* Softly fades the top and bottom edges of a hero photo into the page (no hard lines). */
+@utility hero-fade {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 68%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 68%, transparent 100%);
+}
 @utility eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
 
 @keyframes word-swap { from { opacity: 0; transform: translateY(0.4em); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
@@ -224,15 +242,20 @@
 
   #top {
     height: auto;
-    min-height: 42rem;
+    min-height: 0;
     max-height: none;
     align-items: flex-end;
   }
 
+  #top .hero-overlay {
+    background-image: var(--hero-overlay-mobile);
+  }
+
   #top > div {
     width: calc(100% - 2rem);
-    padding-top: 8rem;
-    padding-bottom: 3rem;
+    /* Leave room for Lady Justice's head and scales above the text. */
+    padding-top: 96vw;
+    padding-bottom: 3.5rem;
   }
 
   #top h1 {
@@ -326,10 +349,6 @@
   header.fixed nav > button,
   header.fixed nav > a {
     padding-inline: 0.5rem;
-  }
-
-  #top {
-    min-height: 44rem;
   }
 }
 
