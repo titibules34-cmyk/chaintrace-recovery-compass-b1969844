@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 const WORDS = ["digital", "tracing", "intelligence", "recovery"];
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { HeroPicture } from "@/components/HeroPicture";
 import { Globe, Users, Monitor, DollarSign, Code2, BarChart3, MapPin, Lock, ShieldCheck, ArrowRight, Phone, Clock, Send, ChevronDown } from "lucide-react";
 import certAcfeCfe from "@/assets/certs/acfe-cfe.png";
 import certTali from "@/assets/certs/tali.png";
@@ -228,8 +229,9 @@ function Index() {
             type="button"
             aria-expanded={servicesOpen}
             aria-controls="services-menu"
-            onMouseEnter={() => setServicesOpen(true)}
-            onFocusCapture={() => setServicesOpen(true)}
+            onPointerEnter={(event) => {
+              if (event.pointerType === "mouse") setServicesOpen(true);
+            }}
             onClick={() => setServicesOpen((open) => !open)}
             className={`inline-flex items-center gap-2 rounded-full px-3 py-2 font-semibold transition hover:bg-secondary hover:text-foreground sm:px-4 ${servicesOpen ? "bg-secondary/40 text-foreground" : ""}`}
           >
@@ -239,7 +241,7 @@ function Index() {
             <div
               id="services-menu"
               aria-hidden={!servicesOpen}
-              className={`absolute left-1/2 top-full z-50 w-[min(28rem,calc(100vw-2rem))] -translate-x-1/2 origin-top overflow-hidden rounded-2xl border border-border bg-card/50 p-2.5 shadow-2xl backdrop-blur-xl transition-[opacity,transform,visibility] duration-300 ease-out before:absolute before:-top-3 before:inset-x-0 before:h-3 ${
+              className={`absolute right-0 top-full z-50 w-[min(28rem,calc(100vw-2rem))] origin-top-right sm:right-auto sm:left-1/2 sm:-translate-x-1/2 sm:origin-top overflow-hidden rounded-2xl border border-border bg-card/50 p-2.5 shadow-2xl backdrop-blur-xl transition-[opacity,transform,visibility] duration-300 ease-out before:absolute before:-top-3 before:inset-x-0 before:h-3 ${
                 servicesOpen
                   ? "visible translate-y-0 scale-100 opacity-100"
                   : "invisible -translate-y-3 scale-95 opacity-0 pointer-events-none"
@@ -255,6 +257,11 @@ function Index() {
                   <ShieldCheck className="h-5 w-5" aria-hidden="true" />
                 </span>
               </div>
+
+              <Link onClick={() => setServicesOpen(false)} to="/about-us" className="group mt-2 flex items-center justify-between rounded-xl border border-border/50 bg-background/20 px-3 py-2.5 text-xs font-bold text-foreground transition hover:border-accent/40 hover:bg-secondary sm:hidden">
+                About Cyber Justice
+                <ArrowRight className="h-4 w-4 text-accent" aria-hidden="true" />
+              </Link>
 
               <div className="mt-4">
                 <div className="mb-2 flex items-center justify-between px-1">
@@ -332,8 +339,12 @@ function Index() {
         </nav>
       </header>
 
-      <section id="top" className="relative flex h-[80vh] min-h-[32rem] max-h-[46rem] items-end overflow-hidden">
-        <img src="/assets/cyber-justice-hero.webp" alt="Lady Justice in a blue digital investigation room" className="absolute inset-0 -z-20 h-full w-full object-cover" fetchPriority="high" />
+      <section id="top" className="relative flex h-[88vh] min-h-[34rem] max-h-[52rem] items-end overflow-hidden">
+        <HeroPicture
+          priority
+          alt="Lady Justice in a blue digital investigation room"
+          className="absolute inset-x-0 top-0 -z-20 h-auto w-full md:inset-0 md:h-full md:object-cover md:object-[right_top]"
+        />
         <div className="hero-overlay absolute inset-0 -z-10" />
         <div className="mx-auto w-[min(100%-2rem,64rem)] pb-16 pt-32">
           <p className="eyebrow">Recovery forensics & investigations</p>
@@ -401,7 +412,7 @@ function Index() {
       </section>
 
       <section className="border-y border-border bg-card/40">
-        <div className="mx-auto grid w-[min(100%-2rem,64rem)] gap-8 py-16 sm:grid-cols-4">
+        <div className="mx-auto grid w-[min(100%-2rem,64rem)] grid-cols-2 gap-x-5 gap-y-8 py-12 sm:grid-cols-4 sm:gap-8 sm:py-16">
           {steps.map(([title, text], i) => (
             <div key={title}>
               <span className="eyebrow">0{i + 1}</span>
@@ -447,7 +458,7 @@ function Index() {
         </div>
 
         <div className="mt-12 grid overflow-hidden rounded-2xl border border-border bg-card lg:grid-cols-2">
-          <div className="flex flex-col gap-5 p-8 sm:p-10">
+          <div className="flex flex-col gap-5 p-5 sm:p-10">
             <div className="flex flex-wrap gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-xs font-bold tracking-wide text-accent">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
@@ -486,7 +497,7 @@ function Index() {
             </dl>
           </div>
 
-          <div className="flex flex-col gap-4 border-t border-border bg-background/40 p-8 sm:p-10 lg:border-l lg:border-t-0">
+          <div className="flex flex-col gap-4 border-t border-border bg-background/40 p-5 sm:p-10 lg:border-l lg:border-t-0">
             <h3 className="text-lg font-bold">Operational Scope &amp; Forensic Standards</h3>
             {standards.map(({ icon: Icon, title, text }) => (
               <div key={title} className="flex items-start gap-4 rounded-xl border border-border bg-card p-5 transition hover:border-primary">
@@ -599,11 +610,11 @@ function Index() {
               Recognized by global law enforcement &amp; regulatory authorities
             </p>
           </div>
-          <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <ul className="mt-8 grid grid-cols-3 gap-2.5 sm:mt-10 sm:gap-4 lg:grid-cols-6">
             {certifications.map(([src, label]) => (
               <li
                 key={label}
-                className="flex items-center justify-center rounded-xl border border-border bg-card/60 p-4 transition hover:border-accent/50"
+                className="flex items-center justify-center rounded-xl border border-border bg-card/60 p-3 transition hover:border-accent/50 sm:p-4"
               >
                 <img
                   src={src}
@@ -612,7 +623,7 @@ function Index() {
                   loading="lazy"
                   width={816}
                   height={816}
-                  className="h-16 w-auto max-w-full object-contain"
+                  className="h-12 w-auto max-w-full object-contain sm:h-16"
                 />
               </li>
             ))}

@@ -1,3 +1,4 @@
+import { HeroPicture } from "@/components/HeroPicture";
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Globe, UserSearch, Bitcoin, FileSearch, Landmark, ShieldCheck, Coins, Scale, Earth, Gavel, Wallet, Search, BadgeCheck, type LucideIcon } from "lucide-react";
@@ -57,7 +58,7 @@ function IntelligenceServices() {
       </header>
 
       <section className="relative isolate overflow-hidden">
-        <img src="/assets/cyber-justice-hero.webp" alt="" className="absolute inset-0 -z-20 h-full w-full object-cover opacity-60" />
+        <HeroPicture className="absolute inset-0 -z-20 h-full w-full object-cover object-[75%_top] opacity-60 md:object-[right_top]" />
         <div className="hero-overlay absolute inset-0 -z-10" />
         <div className="mx-auto w-[min(100%-2rem,64rem)] pb-14 pt-36">
           <p className="eyebrow">CYBER INVESTIGATION TEAM · OSINT · HUMINT · FININT</p>
