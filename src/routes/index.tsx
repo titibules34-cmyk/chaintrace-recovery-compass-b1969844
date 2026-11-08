@@ -229,8 +229,9 @@ function Index() {
             type="button"
             aria-expanded={servicesOpen}
             aria-controls="services-menu"
-            onMouseEnter={() => setServicesOpen(true)}
-            onFocusCapture={() => setServicesOpen(true)}
+            onPointerEnter={(event) => {
+              if (event.pointerType === "mouse") setServicesOpen(true);
+            }}
             onClick={() => setServicesOpen((open) => !open)}
             className={`inline-flex items-center gap-2 rounded-full px-3 py-2 font-semibold transition hover:bg-secondary hover:text-foreground sm:px-4 ${servicesOpen ? "bg-secondary/40 text-foreground" : ""}`}
           >
