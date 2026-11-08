@@ -13,8 +13,9 @@ export function HeroPicture({
   priority?: boolean;
 }) {
   return (
-    <picture>
-      <source media="(max-width: 767px)" srcSet={mobileHero} />
+    // `contents` keeps the <img> positioned against the hero section; data-reveal opts out of the scroll animation.
+    <picture className="contents" data-reveal="skip">
+      <source media="(max-width: 639px)" srcSet={mobileHero} />
       <img
         src={DESKTOP_HERO}
         alt={alt}

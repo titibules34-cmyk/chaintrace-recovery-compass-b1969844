@@ -166,6 +166,12 @@
 }
 
 @utility hero-overlay { background-image: var(--hero-overlay); }
+
+/* Softly fades the top and bottom edges of a hero photo into the page (no hard lines). */
+@utility hero-fade {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 68%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 7%, #000 68%, transparent 100%);
+}
 @utility eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
 
 @keyframes word-swap { from { opacity: 0; transform: translateY(0.4em); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
