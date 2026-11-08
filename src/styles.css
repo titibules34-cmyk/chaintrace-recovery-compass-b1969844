@@ -98,7 +98,19 @@
   --sidebar-accent-foreground: oklch(0.99 0 0);
   --sidebar-border: oklch(0.82 0.03 250 / 16%);
   --sidebar-ring: oklch(0.57 0.18 252);
-  --hero-overlay: linear-gradient(0deg, var(--background) 2%, oklch(0.18 0.05 260 / 55%) 45%, oklch(0.18 0.05 260 / 35%) 100%);
+  --hero-overlay:
+    linear-gradient(0deg, var(--background) 1%, oklch(0.18 0.05 260 / 0%) 38%),
+    linear-gradient(90deg, oklch(0.16 0.05 260 / 82%) 0%, oklch(0.18 0.05 260 / 55%) 42%, oklch(0.18 0.05 260 / 8%) 72%, oklch(0.18 0.05 260 / 0%) 100%),
+    linear-gradient(180deg, oklch(0.16 0.05 260 / 45%) 0%, oklch(0.18 0.05 260 / 0%) 22%);
+  /* Phone hero: keeps Lady Justice clear at the top, fades into the page behind the text. */
+  --hero-overlay-mobile: linear-gradient(
+    180deg,
+    oklch(0.16 0.05 260 / 50%) 0,
+    oklch(0.16 0.05 260 / 0%) 26vw,
+    oklch(0.16 0.05 260 / 0%) 78vw,
+    color-mix(in oklab, var(--background) 82%, transparent) 112vw,
+    var(--background) 172vw
+  );
   --shadow-glow: 0 10px 30px -10px color-mix(in oklab, var(--primary) 60%, transparent);
 }
 
@@ -226,15 +238,20 @@
 
   #top {
     height: auto;
-    min-height: 42rem;
+    min-height: 0;
     max-height: none;
     align-items: flex-end;
   }
 
+  #top .hero-overlay {
+    background-image: var(--hero-overlay-mobile);
+  }
+
   #top > div {
     width: calc(100% - 2rem);
-    padding-top: 8rem;
-    padding-bottom: 3rem;
+    /* Leave room for Lady Justice's head and scales above the text. */
+    padding-top: 96vw;
+    padding-bottom: 3.5rem;
   }
 
   #top h1 {
