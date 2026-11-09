@@ -205,6 +205,18 @@ function FloatingCJBot() {
   const handleChoice=(choice:string)=>{
     addVisitor(choice); setMailReady(false);
     if(stage==="welcome"){
+      setLead(current=>({...current,service:choice==="Speak to the recovery team"?"General enquiry":choice}));
+      setStage("lead-form"); setChoices([]);
+      addBot("Of course. Please fill in the short form below and our team will get back to you. All consultations are confidential. You can include the key details in your own words — no need to answer lots of questions.");
+      return;
+    }
+    if(stage==="contact-topic"){
+      setLead(current=>({...current,service:choice}));
+      setStage("lead-form"); setChoices([]);
+      addBot("Thanks. Please complete the short form below and our team will get back to you. All consultations are confidential.");
+      return;
+    }
+    if(stage==="welcome"){
       if(choice==="Speak to the recovery team"){
         setStage("contact-topic"); addBot("Of course. Which Cyber Justice service is your enquiry about?");
         setChoices(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence","Cyber investigation team","General enquiry"]);
@@ -328,15 +340,24 @@ function FloatingCJBot() {
               </div>
             ))}
             {choices.length>0&&<div className="ml-10 space-y-2">{choices.map(choice=><button key={choice} type="button" onClick={()=>handleChoice(choice)} className="group w-full rounded-xl border border-blue-200/90 bg-white px-3.5 py-3 text-left text-[0.84rem] font-semibold leading-snug text-blue-700 shadow-[0_2px_8px_rgba(15,70,130,.04)] transition hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"><span className="flex items-center justify-between gap-2"><span>{choice}</span><span className="text-blue-300 transition group-hover:translate-x-0.5 group-hover:text-blue-600" aria-hidden="true">›</span></span></button>)}</div>}
+            {stage==="lead-form"&&<form onSubmit={event=>{event.preventDefault();setStage("complete");setMailReady(true);addBot("Thank you. Your enquiry is ready. Select “Send message” below to open your email app with the details filled in. Please review and send it to complete your request.");}} className="ml-10 space-y-3 rounded-2xl border border-blue-100 bg-white/95 p-4 shadow-sm">
+              <p className="text-sm leading-relaxed text-slate-700">📩 Great! Please fill out the form below and our team will get back to you within 24 hours. All consultations are confidential.</p>
+              <input required value={lead.name} onChange={event=>setLead(current=>({...current,name:event.target.value}))} placeholder="Your name" aria-label="Your name" className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100"/>
+              <input required type="email" value={lead.email} onChange={event=>setLead(current=>({...current,email:event.target.value}))} placeholder="Email address" aria-label="Email address" className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100"/>
+              <input type="tel" value={lead.phone} onChange={event=>setLead(current=>({...current,phone:event.target.value}))} placeholder="Phone number (optional)" aria-label="Phone number (optional)" className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100"/>
+              <textarea required rows={4} value={lead.summary} onChange={event=>setLead(current=>({...current,summary:event.target.value}))} placeholder="Brief description of your case..." aria-label="Brief description of your case" className="w-full resize-y rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm leading-relaxed text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100"/>
+              <p className="text-[0.68rem] leading-relaxed text-slate-500">Enquiry topic: <span className="font-semibold text-blue-700">{lead.service}</span>. Please do not include passwords, private keys, recovery phrases or one-time codes.</p>
+              <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3.5 text-sm font-bold text-white shadow-md shadow-blue-900/15 transition hover:from-blue-700 hover:to-blue-800">➤ Send Message</button>
+            </form>}
             {mailReady&&<div className="ml-10 rounded-xl border border-emerald-200 bg-emerald-50 p-3"><p className="text-xs leading-relaxed text-emerald-900">Your email app will open with the enquiry details filled in. Please review and send it to complete your request.</p><a href={mailHref} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-800">Open enquiry email <span aria-hidden="true">↗</span></a></div>}
           </div>
-          <form onSubmit={event=>{event.preventDefault();sendMessage();}} className="shrink-0 border-t border-blue-100 bg-white/95 p-3">
+          {stage!=="lead-form"&&stage!=="complete"&&<form onSubmit={event=>{event.preventDefault();sendMessage();}} className="shrink-0 border-t border-blue-100 bg-white/95 p-3">
             <div className="flex items-center gap-2 rounded-full border border-blue-200 bg-slate-50 p-1.5 pl-4 transition focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100">
               <input value={draft} onChange={event=>setDraft(event.target.value)} placeholder={stage==="name"?"Enter your full name...":stage==="email"?"Enter your email address...":stage==="phone"?"Phone number or type skip...":stage==="summary"?"Write a short case summary...":"Type your message..."} aria-label="Type your message to CJ Bot" className="min-w-0 flex-1 bg-transparent py-2 text-sm text-slate-800 outline-none placeholder:text-slate-400"/>
               <button type="submit" aria-label="Send message" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-lg font-bold text-white shadow-md shadow-blue-900/20 transition hover:scale-105 hover:from-blue-700 hover:to-blue-800">➤</button>
             </div>
             <p className="mt-2 flex items-center justify-center gap-1.5 text-center text-[0.66rem] leading-relaxed text-slate-500"><span aria-hidden="true">🔒</span> Never share passwords, private keys, recovery phrases or one-time codes.</p>
-          </form>
+          </form>}
           <div className="flex shrink-0 items-center justify-between border-t border-slate-100 bg-slate-50 px-4 py-2"><span className="text-[0.65rem] text-slate-500">Need a fresh start?</span><button type="button" onClick={resetChat} className="text-xs font-semibold text-blue-700 hover:underline">Restart chat</button></div>
         </section>
       )}
