@@ -279,7 +279,7 @@
   #top > div > p:last-child {
     align-items: flex-start;
     justify-content: center;
-    text-align: left;
+    text-align: center;
     line-height: 1.55;
   }
 
