@@ -183,140 +183,152 @@ function FloatingClientReviews() {
 
 
 type CJMessage = { from: "bot" | "visitor"; text: string };
+type CJLead = { service:string; issue:string; platform:string; amount:string; timeframe:string; evidence:string; name:string; email:string; phone:string; summary:string };
+const emptyCJLead: CJLead = { service:"", issue:"", platform:"", amount:"", timeframe:"", evidence:"", name:"", email:"", phone:"", summary:"" };
 
 function FloatingCJBot() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [draft, setDraft] = useState("");
-  const [messages, setMessages] = useState<CJMessage[]>([
-    { from: "bot", text: "Welcome to Cyber Justice Recovery. I'm CJ Bot, your virtual guide. I can help you understand common digital-asset scams, organise useful information and find the right next step. How can I help today?" },
-  ]);
-  const [choices, setChoices] = useState([
-    "💰 I lost crypto to a scam",
-    "🔎 I need help tracing a transaction",
-    "🔒 My funds or account are frozen",
-    "📋 I want to check an existing case",
-    "🛡️ Tell me about CJR services",
-    "📍 Where are you located?",
-    "👤 Speak to the recovery team",
-  ]);
+  const [isOpen,setIsOpen]=useState(false);
+  const [draft,setDraft]=useState("");
+  const [stage,setStage]=useState("welcome");
+  const [messages,setMessages]=useState<CJMessage[]>([{from:"bot",text:"Welcome to Cyber Justice. I'm CJ Bot, your website assistant. I can explain our services, outline how an enquiry is reviewed, and help you prepare a confidential consultation request. What would you like help with?"}]);
+  const [choices,setChoices]=useState(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence (OSINT / HUMINT)","Cyber investigation team","How the process works","Contact the team"]);
+  const [lead,setLead]=useState<CJLead>(emptyCJLead);
+  const [mailReady,setMailReady]=useState(false);
+  const addVisitor=(text:string)=>setMessages(current=>[...current,{from:"visitor",text}]);
+  const addBot=(text:string)=>setMessages(current=>[...current,{from:"bot",text}]);
 
-  const addVisitorMessage = (text: string) =>
-    setMessages((current) => [...current, { from: "visitor", text }]);
-  const addBotMessage = (text: string) =>
-    setMessages((current) => [...current, { from: "bot", text }]);
+  const beginContact=()=>{
+    setStage("name"); setChoices([]);
+    addBot("That covers the initial questions. Would you like the Cyber Justice team to follow up? If so, please leave your contact details. First, what is your full name?");
+  };
 
-  const handleChoice = (choice: string) => {
-    addVisitorMessage(choice);
-    if (choice.includes("lost crypto")) {
-      addBotMessage("I'm sorry this happened. You're in the right place to learn about possible next steps. What type of situation best describes it?");
-      setChoices([
-        "🪙 Fake crypto exchange / rug pull",
-        "💔 Romance / pig-butchering scam",
-        "📈 Fake investment platform",
-        "🎭 NFT / wallet hack",
-        "🎣 Phishing or impersonation",
-        "❔ Something else",
-      ]);
-    } else if (choice.includes("Fake crypto") || choice.includes("Romance") || choice.includes("Fake investment") || choice.includes("NFT") || choice.includes("Phishing") || choice.includes("Something else")) {
-      addBotMessage("Thank you for explaining. If it is safe to do so, preserve the messages, website details, payment records and any transaction IDs. A transaction ID and public wallet address can help someone review the on-chain activity. I can't confirm whether funds can be recovered or guarantee an outcome through this chat.");
-      setChoices(["🧾 What information should I prepare?", "🔎 I need help tracing a transaction", "👤 Speak to the recovery team"]);
-    } else if (choice.includes("tracing a transaction")) {
-      addBotMessage("Transaction tracing starts with reliable records. You may want to gather the transaction ID (TXID), public sending and receiving wallet addresses, blockchain network, approximate date and amount. A public transaction ID is different from a private key. Never share your seed phrase or wallet password.");
-      setChoices(["🧾 What information should I prepare?", "💰 I lost crypto to a scam", "👤 Speak to the recovery team"]);
-    } else if (choice.includes("funds or account are frozen")) {
-      addBotMessage("That sounds stressful. Keep any messages from the platform, the date the restriction began and any relevant account or transaction references. Be cautious of anyone demanding an extra payment or promising guaranteed release of funds. For help with your specific circumstances, contact the team through the website.");
-      setChoices(["🧾 What information should I prepare?", "🛡️ Tell me about CJR services", "👤 Speak to the recovery team"]);
-    } else if (choice.includes("existing case")) {
-      addBotMessage("For privacy, CJ Bot can't access case files or verify your case status. Please use the contact details on this website and include your existing case reference. Don't post identity documents or sensitive account details in this chat.");
-      setChoices(["📍 Where are you located?", "👤 Speak to the recovery team"]);
-    } else if (choice.includes("CJR services")) {
-      addBotMessage("Cyber Justice Recovery offers information and assistance for people affected by suspected digital-asset scams. Depending on the circumstances, this may include helping you understand transaction records, organise supporting evidence and consider possible next steps. Every case is different; no recovery outcome or timeframe can be guaranteed.");
-      setChoices(["💰 I lost crypto to a scam", "🔎 I need help tracing a transaction", "🧾 What information should I prepare?"]);
-    } else if (choice.includes("located")) {
-      addBotMessage("For the team's current office location and contact information, please visit the Contact page on this website. I don't want to guess or provide an unverified address.");
-      setChoices(["🛡️ Tell me about CJR services", "👤 Speak to the recovery team"]);
-    } else if (choice.includes("information should I prepare")) {
-      addBotMessage("Useful records may include: the approximate date and amount, currency, platform or wallet name, public wallet addresses, transaction IDs (TXIDs), screenshots of messages and any report reference. Please redact personal information where possible. Never share passwords, one-time codes, private keys or your recovery phrase.");
-      setChoices(["🔎 I need help tracing a transaction", "💰 I lost crypto to a scam", "👤 Speak to the recovery team"]);
-    } else {
-      addBotMessage("For direct assistance with your situation, please use the Contact page on this website. If you already have a case reference, include it there. Please don't send passwords, private keys, recovery phrases or one-time codes.");
-      setChoices(["🧾 What information should I prepare?", "💰 I lost crypto to a scam"]);
+  const handleChoice=(choice:string)=>{
+    addVisitor(choice); setMailReady(false);
+    if(stage==="welcome"){
+      if(choice==="Contact the team"){
+        setStage("contact-topic"); addBot("Of course. Which Cyber Justice service is your enquiry about?");
+        setChoices(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence","Cyber investigation team","General enquiry"]);
+      } else if(choice==="How the process works"){
+        setStage("process"); addBot("The website describes four steps: Scope — clarify what happened and what a review can establish; Review — check your records and relevant public data; Document — organise findings into a referenced timeline; Next Steps — explain what the evidence supports and who may be able to help. What would you like to explore?");
+        setChoices(["What information should I prepare?","I have a crypto tracing enquiry","I have another investigation enquiry","Contact the team"]);
+      } else {
+        setLead(current=>({...current,service:choice})); setStage("issue");
+        const intro=choice==="Asset tracing & investigations"
+          ?"Asset Tracing & Investigations focuses on following asset movements and organising evidence that may assist law firms, investigators and other relevant professionals. What best describes your situation?"
+          :choice==="Cryptocurrency tracing"
+          ?"Cryptocurrency Tracing focuses on reviewing on-chain transactions and following digital-asset movements. What best describes your situation?"
+          :choice==="Cyber intelligence (OSINT / HUMINT)"
+          ?"Cyber Intelligence covers OSINT and HUMINT approaches for digital research and intelligence gathering. What kind of information or investigation are you looking for?"
+          :"The Cyber Investigation Team provides specialist digital investigation and evidence-gathering support. What type of matter would you like to discuss?";
+        addBot(intro); setChoices(["Crypto scam or suspected fraud","Funds transferred to another wallet","Investment or online platform concern","Identity theft, impersonation or phishing","Business, legal or investigator support","Something else"]);
+      }
+    } else if(stage==="process"){
+      if(choice==="What information should I prepare?"){
+        addBot("Useful initial records can include dates, amounts, platform or exchange names, public wallet addresses, transaction IDs (TXIDs), screenshots and any reports already made. Never share passwords, private keys, seed phrases, one-time codes or full identity documents in this chat.");
+        setChoices(["Contact the team","I have a crypto tracing enquiry","I have another investigation enquiry"]);
+      } else if(choice==="I have a crypto tracing enquiry"){
+        setLead(current=>({...current,service:"Cryptocurrency tracing"})); setStage("issue"); addBot("What best describes the cryptocurrency matter?");
+        setChoices(["Crypto scam or suspected fraud","Funds transferred to another wallet","Investment or online platform concern","Something else"]);
+      } else {
+        setStage("contact-topic"); addBot("Which service is most relevant to your enquiry?");
+        setChoices(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence","Cyber investigation team","General enquiry"]);
+      }
+    } else if(stage==="contact-topic"){
+      setLead(current=>({...current,service:choice})); setStage("summary"); setChoices([]);
+      addBot("Thank you. In one or two sentences, what would you like the team to know about your enquiry?");
+    } else if(stage==="issue"){
+      setLead(current=>({...current,issue:choice})); setStage("platform");
+      addBot("Which platform, exchange, wallet or organisation is involved? You can type “not sure”. Please share only its name, never login details.");
+      setChoices(["Not sure","Prefer to explain in my message"]);
+    } else if(stage==="platform"){
+      setLead(current=>({...current,platform:choice})); setStage("amount");
+      addBot("Do you have an approximate value involved? A broad range is fine, and you can choose not to say.");
+      setChoices(["Under £1,000","£1,000–£10,000","£10,000–£50,000","Over £50,000","Prefer not to say"]);
+    } else if(stage==="amount"){
+      setLead(current=>({...current,amount:choice})); setStage("timeframe");
+      addBot("When did this happen?");
+      setChoices(["Within the last week","Within the last month","1–6 months ago","More than 6 months ago","Not sure"]);
+    } else if(stage==="timeframe"){
+      setLead(current=>({...current,timeframe:choice})); setStage("evidence");
+      addBot("Do you have supporting records such as transaction IDs, public wallet addresses, screenshots, emails or a report reference?");
+      setChoices(["Yes, I have some records","No, not yet","I'm not sure what I need"]);
+    } else if(stage==="evidence"){
+      setLead(current=>({...current,evidence:choice})); beginContact();
     }
   };
 
-  const sendMessage = () => {
-    const text = draft.trim();
-    if (!text) return;
-    addVisitorMessage(text);
-    setDraft("");
-    addBotMessage("Thank you for sharing that. I can offer general information, but I can't verify transactions, access case files or assess recovery prospects from this chat. Keep relevant records and contact the team through the website for a case-specific review. Never share passwords, one-time codes, private keys or recovery phrases.");
-    setChoices(["🧾 What information should I prepare?", "🔎 I need help tracing a transaction", "👤 Speak to the recovery team"]);
+  const sendMessage=()=>{
+    const value=draft.trim(); if(!value)return;
+    addVisitor(value); setDraft(""); setMailReady(false);
+    if(stage==="name"){
+      setLead(current=>({...current,name:value})); setStage("email"); addBot("Thanks. What email address should the team use to reply?");
+    } else if(stage==="email"){
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)){addBot("That doesn't look like a complete email address. Please check it and enter it again.");return;}
+      setLead(current=>({...current,email:value})); setStage("phone"); addBot("What phone number can the team use if a call is more convenient? Type “skip” if you prefer email only.");
+    } else if(stage==="phone"){
+      setLead(current=>({...current,phone:value.toLowerCase()==="skip"?"":value})); setStage("summary");
+      addBot("Finally, please add a short summary of what happened and what help you are looking for. Do not include passwords, private keys, recovery phrases or one-time codes.");
+    } else if(stage==="summary"){
+      setLead(current=>({...current,summary:value})); setStage("complete"); setChoices([]);
+      addBot("Thank you. Your enquiry details are ready. Select the button below to open an email addressed to Cyber Justice with the information you provided. This chat does not submit or store your details on its own.");
+      setMailReady(true);
+    } else {
+      addBot("Thanks for explaining. I can provide general website information, but I can't verify transactions, access case files or determine whether assets can be recovered in this chat. Would you like to make an enquiry with the team?");
+      setStage("contact-topic"); setChoices(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence","Cyber investigation team","General enquiry"]);
+    }
+  };
+
+  const mailBody=[
+    "Cyber Justice website enquiry","",
+    "Service: "+(lead.service||"General enquiry"),
+    "Situation: "+(lead.issue||"Not specified"),
+    "Platform / organisation: "+(lead.platform||"Not specified"),
+    "Approximate value: "+(lead.amount||"Not specified"),
+    "Timeframe: "+(lead.timeframe||"Not specified"),
+    "Supporting records: "+(lead.evidence||"Not specified"),"",
+    "Name: "+lead.name,"Email: "+lead.email,"Phone: "+(lead.phone||"Not provided"),"",
+    "Enquiry summary:",lead.summary,"","Sent via the CJ Bot website assistant."
+  ].join("\n");
+  const mailHref="mailto:info@cyberjustice.uk?subject="+encodeURIComponent("Website enquiry — Cyber Justice")+"&body="+encodeURIComponent(mailBody);
+  const resetChat=()=>{
+    setStage("welcome");setLead(emptyCJLead);setMailReady(false);setDraft("");
+    setMessages([{from:"bot",text:"Welcome back. I'm CJ Bot, your website assistant. What would you like help with?"}]);
+    setChoices(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence (OSINT / HUMINT)","Cyber investigation team","How the process works","Contact the team"]);
   };
 
   return (
     <aside className="fixed bottom-4 right-4 z-[70] flex flex-col items-end gap-3">
-      {isOpen && (
-        <section
-          aria-label="CJ Bot chat"
-          className="flex h-[min(44rem,calc(100dvh-6.5rem))] w-[min(28rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-[1.65rem] border border-blue-200/70 bg-white text-slate-900 shadow-[0_24px_80px_-20px_rgba(2,20,55,.65)]"
-        >
+      {isOpen&&(
+        <section aria-label="CJ Bot chat" className="flex h-[min(44rem,calc(100dvh-6.5rem))] w-[min(28rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-[1.65rem] border border-blue-200/70 bg-white text-slate-900 shadow-[0_24px_80px_-20px_rgba(2,20,55,.65)]">
           <header className="relative flex shrink-0 items-center gap-3 overflow-hidden bg-gradient-to-r from-[#0754B8] via-[#0875D1] to-[#0754B8] px-5 py-4 text-white">
-            <div className="pointer-events-none absolute -right-8 -top-12 h-36 w-36 rounded-full border border-white/10" />
+            <div className="pointer-events-none absolute -right-8 -top-12 h-36 w-36 rounded-full border border-white/10"/>
             <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/15 text-2xl shadow-inner" aria-hidden="true">⚖️</div>
-            <div className="relative min-w-0 flex-1">
-              <p className="text-base font-extrabold leading-tight tracking-tight">CJ Bot</p>
-              <p className="mt-1 flex items-center gap-1.5 text-xs text-blue-100">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,.8)]" /> Cyber Justice Recovery · Virtual assistant
-              </p>
-            </div>
-            <button type="button" onClick={() => setIsOpen(false)} aria-label="Close CJ Bot" className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-2xl transition hover:bg-white/25">×</button>
+            <div className="relative min-w-0 flex-1"><p className="text-base font-extrabold leading-tight tracking-tight">CJ Bot</p><p className="mt-1 flex items-center gap-1.5 text-xs text-blue-100"><span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,.8)]"/> Cyber Justice · Website assistant</p></div>
+            <button type="button" onClick={()=>setIsOpen(false)} aria-label="Close CJ Bot" className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-2xl transition hover:bg-white/25">×</button>
           </header>
-
           <div className="flex-1 space-y-4 overflow-y-auto bg-[radial-gradient(ellipse_at_top,_#eff6ff_0%,_#f8fbff_48%,_#f1f5f9_100%)] px-4 py-5">
-            <div className="mb-1 flex items-center gap-2 px-1">
-              <span className="h-px flex-1 bg-blue-200/70" />
-              <span className="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-400">Your recovery support starts here</span>
-              <span className="h-px flex-1 bg-blue-200/70" />
-            </div>
-            {messages.map((message, index) => (
-              <div key={index} className={message.from === "visitor" ? "flex justify-end" : "flex items-start gap-2"}>
-                {message.from === "bot" && (
-                  <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-blue-200 bg-gradient-to-br from-blue-600 to-blue-800 text-sm text-white shadow-sm" aria-hidden="true">⚖</span>
-                )}
-                <div className={message.from === "visitor"
-                  ? "max-w-[86%] rounded-2xl rounded-br-md bg-gradient-to-br from-blue-600 to-blue-700 px-4 py-3 text-sm leading-relaxed text-white shadow-md shadow-blue-900/10"
-                  : "max-w-[89%] rounded-2xl rounded-tl-md border border-blue-100 bg-white/90 px-4 py-3 text-sm leading-relaxed text-slate-700 shadow-sm"}>
-                  {message.text}
-                </div>
+            <div className="mb-1 flex items-center gap-2 px-1"><span className="h-px flex-1 bg-blue-200/70"/><span className="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-400">Your enquiry starts here</span><span className="h-px flex-1 bg-blue-200/70"/></div>
+            {messages.map((message,index)=>(
+              <div key={index} className={message.from==="visitor"?"flex justify-end":"flex items-start gap-2"}>
+                {message.from==="bot"&&<span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-blue-200 bg-gradient-to-br from-blue-600 to-blue-800 text-sm text-white shadow-sm" aria-hidden="true">⚖</span>}
+                <div className={message.from==="visitor"?"max-w-[86%] rounded-2xl rounded-br-md bg-gradient-to-br from-blue-600 to-blue-700 px-4 py-3 text-sm leading-relaxed text-white shadow-md shadow-blue-900/10":"max-w-[89%] rounded-2xl rounded-tl-md border border-blue-100 bg-white/90 px-4 py-3 text-sm leading-relaxed text-slate-700 shadow-sm"}>{message.text}</div>
               </div>
             ))}
-            {choices.length > 0 && (
-              <div className="ml-10 space-y-2">
-                {choices.map((choice) => (
-                  <button key={choice} type="button" onClick={() => handleChoice(choice)} className="group w-full rounded-xl border border-blue-200/90 bg-white px-3.5 py-3 text-left text-[0.84rem] font-semibold leading-snug text-blue-700 shadow-[0_2px_8px_rgba(15,70,130,.04)] transition hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    <span className="flex items-center justify-between gap-2">
-                      <span>{choice}</span>
-                      <span className="text-blue-300 transition group-hover:translate-x-0.5 group-hover:text-blue-600" aria-hidden="true">›</span>
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
+            {choices.length>0&&<div className="ml-10 space-y-2">{choices.map(choice=><button key={choice} type="button" onClick={()=>handleChoice(choice)} className="group w-full rounded-xl border border-blue-200/90 bg-white px-3.5 py-3 text-left text-[0.84rem] font-semibold leading-snug text-blue-700 shadow-[0_2px_8px_rgba(15,70,130,.04)] transition hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"><span className="flex items-center justify-between gap-2"><span>{choice}</span><span className="text-blue-300 transition group-hover:translate-x-0.5 group-hover:text-blue-600" aria-hidden="true">›</span></span></button>)}</div>}
+            {mailReady&&<div className="ml-10 rounded-xl border border-emerald-200 bg-emerald-50 p-3"><p className="text-xs leading-relaxed text-emerald-900">Your email app will open with the enquiry details filled in. Please review and send it to complete your request.</p><a href={mailHref} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-800">Open enquiry email <span aria-hidden="true">↗</span></a></div>}
           </div>
-
-          <form onSubmit={(event) => { event.preventDefault(); sendMessage(); }} className="shrink-0 border-t border-blue-100 bg-white/95 p-3">
+          <form onSubmit={event=>{event.preventDefault();sendMessage();}} className="shrink-0 border-t border-blue-100 bg-white/95 p-3">
             <div className="flex items-center gap-2 rounded-full border border-blue-200 bg-slate-50 p-1.5 pl-4 transition focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100">
-              <input value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Type your message..." aria-label="Type your message to CJ Bot" className="min-w-0 flex-1 bg-transparent py-2 text-sm text-slate-800 outline-none placeholder:text-slate-400" />
+              <input value={draft} onChange={event=>setDraft(event.target.value)} placeholder={stage==="name"?"Enter your full name...":stage==="email"?"Enter your email address...":stage==="phone"?"Phone number or type skip...":stage==="summary"?"Write a short case summary...":"Type your message..."} aria-label="Type your message to CJ Bot" className="min-w-0 flex-1 bg-transparent py-2 text-sm text-slate-800 outline-none placeholder:text-slate-400"/>
               <button type="submit" aria-label="Send message" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-lg font-bold text-white shadow-md shadow-blue-900/20 transition hover:scale-105 hover:from-blue-700 hover:to-blue-800">➤</button>
             </div>
-            <p className="mt-2 flex items-center justify-center gap-1.5 text-center text-[0.66rem] leading-relaxed text-slate-500"><span aria-hidden="true">🔒</span> Never share passwords, private keys or recovery phrases.</p>
+            <p className="mt-2 flex items-center justify-center gap-1.5 text-center text-[0.66rem] leading-relaxed text-slate-500"><span aria-hidden="true">🔒</span> Never share passwords, private keys, recovery phrases or one-time codes.</p>
           </form>
+          <div className="flex shrink-0 items-center justify-between border-t border-slate-100 bg-slate-50 px-4 py-2"><span className="text-[0.65rem] text-slate-500">Need a fresh start?</span><button type="button" onClick={resetChat} className="text-xs font-semibold text-blue-700 hover:underline">Restart chat</button></div>
         </section>
       )}
-      <button type="button" aria-expanded={isOpen} onClick={() => setIsOpen((open) => !open)} className="group flex items-center gap-2.5 rounded-full border border-blue-300/40 bg-gradient-to-r from-blue-700 to-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-xl shadow-blue-950/30 transition hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-blue-950/30 focus:outline-none focus:ring-2 focus:ring-blue-300">
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 text-base" aria-hidden="true">⚖️</span>
-        <span>{isOpen ? "Close CJ Bot" : "Chat with CJ Bot"}</span>
-        {!isOpen && <span className="ml-0.5 h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,.8)]" />}
+      <button type="button" aria-expanded={isOpen} onClick={()=>setIsOpen(open=>!open)} className="group flex items-center gap-2.5 rounded-full border border-blue-300/40 bg-gradient-to-r from-blue-700 to-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-xl shadow-blue-950/30 transition hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-blue-950/30 focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 text-base" aria-hidden="true">⚖️</span><span>{isOpen?"Close CJ Bot":"Chat with CJ Bot"}</span>{!isOpen&&<span className="ml-0.5 h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,.8)]"/>}
       </button>
     </aside>
   );
