@@ -169,24 +169,11 @@ function FloatingClientReviews() {
             <span className="shrink-0 text-sm tracking-[0.12em] text-accent" aria-label="Five out of five stars">★★★★★</span>
           </div>
           <p key={activeReview} className="client-in min-h-32 text-sm leading-relaxed text-blue-50/90">“{review.text}”</p>
-          <div className="mt-4 flex items-center justify-between border-t border-blue-100/15 pt-3">
-            <span className="text-xs text-muted-foreground">{activeReview + 1} of {clientReviews.length}</span>
+          <div className="mt-4 flex justify-end border-t border-blue-100/15 pt-3">
             <div className="flex items-center gap-2">
               <button type="button" onClick={showPrevious} aria-label="Previous client review" className="flex h-8 w-8 items-center justify-center rounded-full border border-blue-200/20 bg-white/[.06] text-lg text-cyan-200 transition hover:border-cyan-300/50">‹</button>
               <button type="button" onClick={showNext} aria-label="Next client review" className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background text-lg text-accent transition hover:border-accent">›</button>
             </div>
-          </div>
-          <div className="mt-3 flex gap-1.5">
-            {clientReviews.map((item, index) => (
-              <button
-                key={item.name}
-                type="button"
-                onClick={() => setActiveReview(index)}
-                aria-label={`Show review ${index + 1}`}
-                aria-current={index === activeReview ? "true" : undefined}
-                className={`h-1 flex-1 rounded-full transition-colors ${index === activeReview ? "bg-accent" : "bg-muted"}`}
-              />
-            ))}
           </div>
         </section>
       )}
