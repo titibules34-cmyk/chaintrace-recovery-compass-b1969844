@@ -198,24 +198,12 @@ function FloatingCJBot() {
   const addBot=(text:string)=>setMessages(current=>[...current,{from:"bot",text}]);
 
   const beginContact=()=>{
-    setStage("name"); setChoices([]);
-    addBot("That covers the initial questions. Would you like the Cyber Justice team to follow up? If so, please leave your contact details. First, what is your full name?");
+    setStage("lead-form"); setChoices([]);
+    addBot("That covers the initial questions. Please complete the short form below and our team will get back to you. All consultations are confidential.");
   };
 
   const handleChoice=(choice:string)=>{
     addVisitor(choice); setMailReady(false);
-    if(stage==="welcome"){
-      setLead(current=>({...current,service:choice==="Speak to the recovery team"?"General enquiry":choice}));
-      setStage("lead-form"); setChoices([]);
-      addBot("Of course. Please fill in the short form below and our team will get back to you. All consultations are confidential. You can include the key details in your own words — no need to answer lots of questions.");
-      return;
-    }
-    if(stage==="contact-topic"){
-      setLead(current=>({...current,service:choice}));
-      setStage("lead-form"); setChoices([]);
-      addBot("Thanks. Please complete the short form below and our team will get back to you. All consultations are confidential.");
-      return;
-    }
     if(stage==="welcome"){
       if(choice==="Speak to the recovery team"){
         setStage("contact-topic"); addBot("Of course. Which Cyber Justice service is your enquiry about?");
@@ -257,8 +245,8 @@ function FloatingCJBot() {
         setChoices(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence","Cyber investigation team","General enquiry"]);
       }
     } else if(stage==="contact-topic"){
-      setLead(current=>({...current,service:choice})); setStage("summary-first"); setChoices([]);
-      addBot("Thank you. In one or two sentences, what would you like the team to know about your enquiry?");
+      setLead(current=>({...current,service:choice})); setStage("lead-form"); setChoices([]);
+      addBot("Thank you. Please complete the short form below and our team will get back to you. All consultations are confidential.");
     } else if(stage==="issue"){
       setLead(current=>({...current,issue:choice})); setStage("platform");
       addBot("Which platform, exchange, wallet or organisation is involved? You can type “not sure”. Please share only its name, never login details.");
