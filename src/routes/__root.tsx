@@ -143,13 +143,13 @@ function FloatingClientReviews() {
     setActiveReview((current) => (current + 1) % clientReviews.length);
 
   return (
-    <aside className="fixed left-4 top-24 z-[60] flex w-[min(21rem,calc(100vw-2rem))] flex-col items-start gap-3">
+    <aside className="fixed bottom-4 left-4 z-[60] flex w-[min(21rem,calc(100vw-2rem))] flex-col items-start gap-3">
       <button
         type="button"
         aria-expanded={isOpen}
         aria-controls="floating-client-review-panel"
         onClick={() => setIsOpen((open) => !open)}
-        className="inline-flex items-center gap-2 rounded-full border border-accent/50 bg-card/95 px-4 py-3 text-xs font-bold text-foreground shadow-2xl shadow-black/30 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-accent"
+        className="inline-flex items-center gap-2 rounded-full border border-blue-200/20 bg-white/[.075] px-4 py-3 text-xs font-bold text-blue-50 shadow-2xl shadow-black/30 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-accent"
       >
         <span className="text-accent" aria-hidden="true">★★★★★</span>
         <span>Client reviews</span>
@@ -159,20 +159,20 @@ function FloatingClientReviews() {
         <section
           id="floating-client-review-panel"
           aria-live="polite"
-          className="w-full overflow-hidden rounded-2xl border border-accent/30 bg-card/95 p-5 text-card-foreground shadow-2xl shadow-black/40 backdrop-blur-xl"
+          className="w-full overflow-hidden rounded-2xl border border-blue-200/20 bg-white/[.075] p-5 text-blue-50 shadow-2xl shadow-black/40 backdrop-blur-xl"
         >
           <div className="mb-3 flex items-center justify-between gap-3">
             <div className="min-w-0">
-              <p className="text-sm font-bold text-foreground">{review.name}</p>
+              <p className="text-sm font-bold text-white">{review.name}</p>
               <p className="mt-1 text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">Client review</p>
             </div>
             <span className="shrink-0 text-sm tracking-[0.12em] text-accent" aria-label="Five out of five stars">★★★★★</span>
           </div>
-          <p key={activeReview} className="client-in min-h-32 text-sm leading-relaxed text-card-foreground">“{review.text}”</p>
-          <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
+          <p key={activeReview} className="client-in min-h-32 text-sm leading-relaxed text-blue-50/90">“{review.text}”</p>
+          <div className="mt-4 flex items-center justify-between border-t border-blue-100/15 pt-3">
             <span className="text-xs text-muted-foreground">{activeReview + 1} of {clientReviews.length}</span>
             <div className="flex items-center gap-2">
-              <button type="button" onClick={showPrevious} aria-label="Previous client review" className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background text-lg text-accent transition hover:border-accent">‹</button>
+              <button type="button" onClick={showPrevious} aria-label="Previous client review" className="flex h-8 w-8 items-center justify-center rounded-full border border-blue-200/20 bg-white/[.06] text-lg text-cyan-200 transition hover:border-cyan-300/50">‹</button>
               <button type="button" onClick={showNext} aria-label="Next client review" className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background text-lg text-accent transition hover:border-accent">›</button>
             </div>
           </div>
