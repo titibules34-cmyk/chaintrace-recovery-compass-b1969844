@@ -205,7 +205,7 @@ function FloatingCJBot() {
   const handleChoice=(choice:string)=>{
     addVisitor(choice); setMailReady(false);
     if(stage==="welcome"){
-      if(choice==="Contact the team"){
+      if(choice==="Speak to the recovery team"){
         setStage("contact-topic"); addBot("Of course. Which Cyber Justice service is your enquiry about?");
         setChoices(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence","Cyber investigation team","General enquiry"]);
       } else if(choice==="How the process works"){
@@ -213,14 +213,25 @@ function FloatingCJBot() {
         setChoices(["What information should I prepare?","I have a crypto tracing enquiry","I have another investigation enquiry","Contact the team"]);
       } else {
         setLead(current=>({...current,service:choice})); setStage("issue");
-        const intro=choice==="Asset tracing & investigations"
-          ?"Asset Tracing & Investigations focuses on following asset movements and organising evidence that may assist law firms, investigators and other relevant professionals. What best describes your situation?"
-          :choice==="Cryptocurrency tracing"
-          ?"Cryptocurrency Tracing focuses on reviewing on-chain transactions and following digital-asset movements. What best describes your situation?"
-          :choice==="Cyber intelligence (OSINT / HUMINT)"
-          ?"Cyber Intelligence covers OSINT and HUMINT approaches for digital research and intelligence gathering. What kind of information or investigation are you looking for?"
-          :"The Cyber Investigation Team provides specialist digital investigation and evidence-gathering support. What type of matter would you like to discuss?";
-        addBot(intro); setChoices(["Crypto scam or suspected fraud","Funds transferred to another wallet","Investment or online platform concern","Identity theft, impersonation or phishing","Business, legal or investigator support","Something else"]);
+        const intro=choice==="Cryptocurrency scam"
+          ?"I'm sorry you're dealing with this. Was the scam related to an investment opportunity, romance or social contact, a fake exchange, or something else?"
+          :choice==="Investment fraud"
+          ?"I can help gather the basics about the investment concern. Was it an online trading platform, a broker or adviser, a guaranteed-return offer, or another type of investment?"
+          :choice==="Wallet or account theft"
+          ?"Let's establish what happened. Was a wallet drained, an exchange account accessed without permission, or were your login details compromised?"
+          :choice==="Lost access to digital assets"
+          ?"I can help identify the type of access issue. Have you lost access to a wallet, exchange account, or another digital-asset service?"
+          :"Transaction tracing can help organise publicly available transaction information. Do you have a transaction ID (TXID) or public wallet address available?";
+        addBot(intro);
+        setChoices(choice==="Cryptocurrency scam"
+          ?["Fake investment or trading platform","Romance or social-media scam","Fake exchange or support impersonation","Other cryptocurrency scam"]
+          :choice==="Investment fraud"
+          ?["Online trading platform","Broker or adviser","Guaranteed-return investment","Other investment concern"]
+          :choice==="Wallet or account theft"
+          ?["Wallet drained or unauthorised transfer","Exchange account accessed","Login or email compromised","Not sure"]
+          :choice==="Lost access to digital assets"
+          ?["Lost wallet access","Lost exchange account access","Lost recovery phrase or backup","Not sure"]
+          :["I have a transaction ID (TXID)","I have a public wallet address","I have both","I don't have these details"]);
       }
     } else if(stage==="process"){
       if(choice==="What information should I prepare?"){
@@ -295,7 +306,7 @@ function FloatingCJBot() {
   const resetChat=()=>{
     setStage("welcome");setLead(emptyCJLead);setMailReady(false);setDraft("");
     setMessages([{from:"bot",text:"Welcome back. I'm CJ Bot, your website assistant. What would you like help with?"}]);
-    setChoices(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence (OSINT / HUMINT)","Cyber investigation team","How the process works","Contact the team"]);
+    setChoices(["Cryptocurrency scam","Investment fraud","Wallet or account theft","Lost access to digital assets","Transaction tracing","Speak to the recovery team"]);
   };
 
   return (
