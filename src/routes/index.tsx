@@ -395,8 +395,8 @@ function Index() {
             <a href="#contact" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow">Request a consultation</a>
             <a href="#services" className="rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-secondary">Our services</a>
           </div>
-          <p className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
-            <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-accent" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <p className="mt-6 text-center text-xs text-muted-foreground sm:flex sm:items-center sm:gap-2 sm:text-left">
+            <svg viewBox="0 0 24 24" className="mr-1.5 inline-block h-4 w-4 shrink-0 align-[-0.2rem] text-accent sm:mr-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" />
               <path d="m9 12 2 2 4-4" />
             </svg>
