@@ -218,12 +218,11 @@
     font-size: 0.75rem;
   }
 
-  header.fixed nav > button,
   header.fixed nav > a {
     padding: 0.55rem 0.65rem;
   }
 
-  header.fixed nav > a:last-child {
+  header.fixed nav > a[href="#contact"] {
     padding-inline: 0.8rem;
   }
 
@@ -247,6 +246,7 @@
 
   #top > div {
     width: calc(100% - 2rem);
+    text-align: center;
     /* Leave room for Lady Justice's head and scales above the text. */
     padding-top: 96vw;
     padding-bottom: 3.5rem;
@@ -261,6 +261,7 @@
 
   #top > div > p:not(.eyebrow) {
     max-width: 34rem;
+    margin-inline: auto;
     font-size: 0.95rem;
     line-height: 1.65;
   }
@@ -277,6 +278,8 @@
 
   #top > div > p:last-child {
     align-items: flex-start;
+    justify-content: center;
+    text-align: left;
     line-height: 1.55;
   }
 
@@ -340,9 +343,8 @@
     font-size: 0.7rem;
   }
 
-  header.fixed nav > button,
   header.fixed nav > a {
-    padding-inline: 0.5rem;
+    padding-inline: 0.65rem;
   }
 }
 
