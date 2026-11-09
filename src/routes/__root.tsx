@@ -161,15 +161,15 @@ function FloatingClientReviews() {
           aria-live="polite"
           className="mb-1 max-h-[42dvh] w-[43vw] max-w-[11rem] overflow-y-auto rounded-xl border border-blue-200/20 bg-slate-950/95 p-2.5 text-blue-50 shadow-2xl shadow-black/40 backdrop-blur-xl sm:mb-0 sm:w-full sm:max-w-none sm:max-h-none sm:rounded-2xl sm:bg-white/[.075] sm:p-5"
         >
-          <div className="mb-3 flex items-center justify-between gap-3">
+          <div className="mb-2 flex items-center justify-between gap-2 sm:mb-3 sm:gap-3">
             <div className="min-w-0">
-              <p className="text-sm font-bold text-white">{review.name}</p>
+              <p className="text-xs font-bold text-white sm:text-sm">{review.name}</p>
               <p className="mt-1 text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">Client review</p>
             </div>
-            <span className="shrink-0 text-sm tracking-[0.12em] text-accent" aria-label="Five out of five stars">★★★★★</span>
+            <span className="shrink-0 text-xs tracking-[0.12em] text-accent sm:text-sm" aria-label="Five out of five stars">★★★★★</span>
           </div>
-          <p key={activeReview} className="client-in min-h-32 text-sm leading-relaxed text-blue-50/90">“{review.text}”</p>
-          <div className="mt-4 flex justify-end border-t border-blue-100/15 pt-3">
+          <p key={activeReview} className="client-in min-h-0 text-xs leading-relaxed text-blue-50/90 sm:min-h-32 sm:text-sm">“{review.text}”</p>
+          <div className="mt-2 flex justify-end border-t border-blue-100/15 pt-2 sm:mt-4 sm:pt-3">
             <div className="flex items-center gap-2">
               <button type="button" onClick={showPrevious} aria-label="Previous client review" className="flex h-8 w-8 items-center justify-center rounded-full border border-blue-200/20 bg-white/[.06] text-lg text-cyan-200 transition hover:border-cyan-300/50">‹</button>
               <button type="button" onClick={showNext} aria-label="Next client review" className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background text-lg text-accent transition hover:border-accent">›</button>
@@ -317,7 +317,7 @@ function FloatingCJBot() {
             <div className="pointer-events-none absolute -right-8 -top-12 h-36 w-36 rounded-full border border-white/10"/>
             <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/15 text-lg shadow-inner sm:h-12 sm:w-12 sm:text-2xl" aria-hidden="true">⚖️</div>
             <div className="relative min-w-0 flex-1"><p className="text-sm font-extrabold leading-tight tracking-tight sm:text-base">CJ Bot</p><p className="mt-0.5 flex items-center gap-1 text-[0.58rem] text-blue-100 sm:mt-1 sm:gap-1.5 sm:text-xs"><span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,.8)]"/> Cyber Justice · Website assistant</p></div>
-            <button type="button" onClick={()=>setIsOpen(false)} aria-label="Close CJ Bot" className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-2xl transition hover:bg-white/25">×</button>
+            <button type="button" onClick={()=>setIsOpen(false)} aria-label="Close CJ Bot" className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15 text-2xl transition hover:bg-white/25">×</button>
           </header>
           <div className="min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain bg-[radial-gradient(ellipse_at_top,_#eff6ff_0%,_#f8fbff_48%,_#f1f5f9_100%)] px-2 py-2 sm:space-y-4 sm:px-4 sm:py-5">
             <div className="mb-1 flex items-center gap-2 px-1"><span className="h-px flex-1 bg-blue-200/70"/><span className="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-400">Your enquiry starts here</span><span className="h-px flex-1 bg-blue-200/70"/></div>
@@ -327,7 +327,7 @@ function FloatingCJBot() {
                 <div className={message.from==="visitor"?"max-w-[94%] rounded-xl rounded-br-md bg-gradient-to-br from-blue-600 to-blue-700 px-2.5 py-2 text-xs leading-relaxed text-white shadow-md shadow-blue-900/10":"max-w-[94%] rounded-xl rounded-tl-md border border-blue-100 bg-white/90 px-2.5 py-2 text-xs leading-relaxed text-slate-700 shadow-sm sm:max-w-[89%] sm:rounded-2xl sm:px-4 sm:py-3 sm:text-sm"}>{message.text}</div>
               </div>
             ))}
-            {choices.length>0&&<div className="ml-0 space-y-1.5 sm:ml-10 sm:space-y-2">{choices.map(choice=><button key={choice} type="button" onClick={()=>handleChoice(choice)} className="group w-full rounded-lg border border-blue-200/90 bg-white px-2 py-2 text-left text-[0.68rem] font-semibold leading-snug text-blue-700 sm:rounded-xl sm:px-3.5 sm:py-3 sm:text-[0.84rem] shadow-[0_2px_8px_rgba(15,70,130,.04)] transition hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"><span className="flex items-center justify-between gap-2"><span>{choice}</span><span className="text-blue-300 transition group-hover:translate-x-0.5 group-hover:text-blue-600" aria-hidden="true">›</span></span></button>)}</div>}
+            {choices.length>0&&<div className="ml-0 space-y-1.5 sm:ml-10 sm:space-y-2">{choices.map(choice=><button key={choice} type="button" onClick={()=>handleChoice(choice)} className="group w-full min-h-10 rounded-lg border border-blue-200/90 bg-white px-2 py-2.5 text-left text-[0.68rem] font-semibold leading-snug text-blue-700 sm:rounded-xl sm:px-3.5 sm:py-3 sm:text-[0.84rem] shadow-[0_2px_8px_rgba(15,70,130,.04)] transition hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"><span className="flex items-center justify-between gap-2"><span>{choice}</span><span className="text-blue-300 transition group-hover:translate-x-0.5 group-hover:text-blue-600" aria-hidden="true">›</span></span></button>)}</div>}
             {stage==="lead-form"&&<form onSubmit={event=>{event.preventDefault();setStage("complete");setMailReady(true);addBot("Thank you. Your enquiry is ready. Select “Send message” below to open your email app with the details filled in. Please review and send it to complete your request.");}} className="ml-0 space-y-2.5 rounded-2xl border border-blue-100 bg-white/95 p-3 shadow-sm sm:ml-10 sm:space-y-3 sm:p-4">
               <p className="text-sm leading-relaxed text-slate-700">📩 Great! Please fill out the form below and our team will get back to you within 24 hours. All consultations are confidential.</p>
               <input required value={lead.name} onChange={event=>setLead(current=>({...current,name:event.target.value}))} placeholder="Your name" aria-label="Your name" className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100"/>
