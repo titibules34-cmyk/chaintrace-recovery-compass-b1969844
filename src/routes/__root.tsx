@@ -191,7 +191,7 @@ function FloatingCJBot() {
   const [draft,setDraft]=useState("");
   const [stage,setStage]=useState("welcome");
   const [messages,setMessages]=useState<CJMessage[]>([{from:"bot",text:"Welcome to Cyber Justice. I'm CJ Bot, your website assistant. I can explain our services, outline how an enquiry is reviewed, and help you prepare a confidential consultation request. What would you like help with?"}]);
-  const [choices,setChoices]=useState(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence (OSINT / HUMINT)","Cyber investigation team","How the process works","Contact the team"]);
+  const [choices,setChoices]=useState(["Cryptocurrency scam","Investment fraud","Wallet or account theft","Lost access to digital assets","Transaction tracing","Speak to the recovery team"]);
   const [lead,setLead]=useState<CJLead>(emptyCJLead);
   const [mailReady,setMailReady]=useState(false);
   const addVisitor=(text:string)=>setMessages(current=>[...current,{from:"visitor",text}]);
