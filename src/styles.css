@@ -246,10 +246,22 @@
 
   #top > div {
     width: calc(100% - 2rem);
+    margin-inline: auto;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     /* Leave room for Lady Justice's head and scales above the text. */
     padding-top: 96vw;
     padding-bottom: 3.5rem;
+  }
+
+  #top .eyebrow,
+  #top h1,
+  #top > div > p:not(.eyebrow) {
+    width: 100%;
+    margin-inline: auto;
+    text-align: center;
   }
 
   #top h1 {
