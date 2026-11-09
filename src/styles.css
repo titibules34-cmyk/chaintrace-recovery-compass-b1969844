@@ -272,13 +272,12 @@
   }
 
   #top > div > div > a {
-    display: block;
+    justify-content: center;
     text-align: center;
   }
 
   #top > div > p:last-child {
-    align-items: flex-start;
-    justify-content: center;
+    display: block;
     text-align: center;
     line-height: 1.55;
   }
