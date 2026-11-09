@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const WORDS = ["digital", "tracing", "intelligence", "recovery"];
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HeroPicture } from "@/components/HeroPicture";
-import { Globe, Users, Monitor, DollarSign, Code2, BarChart3, MapPin, Lock, ShieldCheck, ArrowRight, Phone, Clock, Send, ChevronDown } from "lucide-react";
+import { Globe, Users, Monitor, DollarSign, Code2, BarChart3, MapPin, Lock, ShieldCheck, ArrowRight, Phone, Clock, Send, ChevronDown, Menu, X } from "lucide-react";
 import certAcfeCfe from "@/assets/certs/acfe-cfe.png";
 import certTali from "@/assets/certs/tali.png";
 import certCyberExpert from "@/assets/certs/cyber-expert.png";
@@ -205,6 +205,7 @@ const contactCards = [
 function Index() {
   const [word, setWord] = useState(0);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   useEffect(() => {
     const t = setInterval(() => setWord((w) => (w + 1) % WORDS.length), 2200);
     return () => clearInterval(t);
@@ -235,7 +236,7 @@ function Index() {
               if (event.pointerType === "mouse") setServicesOpen(true);
             }}
             onClick={() => setServicesOpen((open) => !open)}
-            className={`inline-flex items-center gap-2 rounded-full px-3 py-2 font-semibold transition hover:bg-secondary hover:text-foreground sm:px-4 ${servicesOpen ? "bg-secondary/40 text-foreground" : ""}`}
+            className={`hidden items-center gap-2 rounded-full px-3 py-2 font-semibold transition hover:bg-secondary hover:text-foreground sm:inline-flex sm:px-4 ${servicesOpen ? "bg-secondary/40 text-foreground" : ""}`}
           >
               Services
               <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`} aria-hidden="true" />
@@ -337,8 +338,39 @@ function Index() {
                 Explore all capabilities <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
-          <a href="#contact" onMouseEnter={() => setServicesOpen(false)} onClick={() => setServicesOpen(false)} className="whitespace-nowrap rounded-full bg-primary px-4 py-2 font-semibold text-primary-foreground shadow-glow transition hover:-translate-y-0.5 hover:opacity-90">Contact Us</a>
+          <a href="#contact" onMouseEnter={() => setServicesOpen(false)} onClick={() => { setServicesOpen(false); setMobileMenuOpen(false); }} className="whitespace-nowrap rounded-full bg-primary px-4 py-2 font-semibold text-primary-foreground shadow-glow transition hover:-translate-y-0.5 hover:opacity-90">Contact Us</a>
+          <button
+            type="button"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground transition hover:bg-secondary sm:hidden"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+          </button>
         </nav>
+
+        {mobileMenuOpen && (
+          <div id="mobile-menu" className="absolute inset-x-0 top-full mt-2 rounded-2xl border border-border bg-card p-3 shadow-2xl sm:hidden">
+            <Link to="/about-us" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between rounded-xl px-3 py-3 text-sm font-bold text-foreground transition hover:bg-secondary">
+              About Us
+              <ArrowRight className="h-4 w-4 text-accent" aria-hidden="true" />
+            </Link>
+            <p className="mt-2 border-t border-border px-3 pb-1 pt-3 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-muted-foreground">Services</p>
+            {([
+              ["/asset-recovery", "Asset Tracing & Investigations"],
+              ["/cyber-intelligence", "Cyber Intelligence Services"],
+              ["/cyber-investigation-team", "Cyber Investigation Team"],
+              ["/cryptocurrency-tracing", "Cryptocurrency Tracing"],
+            ] as const).map(([to, label]) => (
+              <Link key={to} to={to} onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-between rounded-xl px-3 py-3 text-sm font-semibold text-foreground transition hover:bg-secondary">
+                {label}
+                <ArrowRight className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              </Link>
+            ))}
+          </div>
+        )}
       </header>
 
       <section id="top" className="relative flex h-[88vh] min-h-[34rem] max-h-[52rem] items-end overflow-hidden">
@@ -363,8 +395,8 @@ function Index() {
             <a href="#contact" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow">Request a consultation</a>
             <a href="#services" className="rounded-full border border-border px-6 py-3 text-sm font-semibold hover:bg-secondary">Our services</a>
           </div>
-          <p className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
-            <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-accent" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <p className="mt-6 text-center text-xs text-muted-foreground sm:flex sm:items-center sm:gap-2 sm:text-left">
+            <svg viewBox="0 0 24 24" className="mr-1.5 inline-block h-4 w-4 shrink-0 align-[-0.2rem] text-accent sm:mr-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" />
               <path d="m9 12 2 2 4-4" />
             </svg>
