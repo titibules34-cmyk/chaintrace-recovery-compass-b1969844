@@ -234,7 +234,7 @@ function FloatingCJBot() {
         setChoices(["Asset tracing & investigations","Cryptocurrency tracing","Cyber intelligence","Cyber investigation team","General enquiry"]);
       }
     } else if(stage==="contact-topic"){
-      setLead(current=>({...current,service:choice})); setStage("summary"); setChoices([]);
+      setLead(current=>({...current,service:choice})); setStage("summary-first"); setChoices([]);
       addBot("Thank you. In one or two sentences, what would you like the team to know about your enquiry?");
     } else if(stage==="issue"){
       setLead(current=>({...current,issue:choice})); setStage("platform");
@@ -260,7 +260,9 @@ function FloatingCJBot() {
   const sendMessage=()=>{
     const value=draft.trim(); if(!value)return;
     addVisitor(value); setDraft(""); setMailReady(false);
-    if(stage==="name"){
+    if(stage==="summary-first"){
+      setLead(current=>({...current,summary:value})); setStage("name"); addBot("Thank you. What is your full name so the team can follow up?");
+    } else if(stage==="name"){
       setLead(current=>({...current,name:value})); setStage("email"); addBot("Thanks. What email address should the team use to reply?");
     } else if(stage==="email"){
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)){addBot("That doesn't look like a complete email address. Please check it and enter it again.");return;}
