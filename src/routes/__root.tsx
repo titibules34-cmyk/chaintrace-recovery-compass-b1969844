@@ -143,13 +143,13 @@ function FloatingClientReviews() {
     setActiveReview((current) => (current + 1) % clientReviews.length);
 
   return (
-    <aside className="fixed bottom-4 left-4 z-[60] flex w-[min(21rem,calc(100vw-2rem))] flex-col items-start gap-3">
+    <aside className="fixed bottom-20 left-2 z-[60] flex w-[min(21rem,calc(100vw-1rem))] flex-col items-start gap-2 sm:bottom-4 sm:left-4 sm:w-[min(21rem,calc(100vw-2rem))] sm:gap-3">
       <button
         type="button"
         aria-expanded={isOpen}
         aria-controls="floating-client-review-panel"
         onClick={() => setIsOpen((open) => !open)}
-        className="inline-flex items-center gap-2 rounded-full border border-blue-200/20 bg-white/[.075] px-4 py-3 text-xs font-bold text-blue-50 shadow-2xl shadow-black/30 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-accent"
+        className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-blue-200/20 bg-slate-950/80 px-3 py-2.5 text-[0.68rem] font-bold text-blue-50 shadow-2xl shadow-black/30 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-accent sm:gap-2 sm:bg-white/[.075] sm:px-4 sm:py-3 sm:text-xs"
       >
         <span className="text-accent" aria-hidden="true">★★★★★</span>
         <span>Client reviews</span>
@@ -159,7 +159,7 @@ function FloatingClientReviews() {
         <section
           id="floating-client-review-panel"
           aria-live="polite"
-          className="w-full overflow-hidden rounded-2xl border border-blue-200/20 bg-white/[.075] p-5 text-blue-50 shadow-2xl shadow-black/40 backdrop-blur-xl"
+          className="max-h-[34dvh] w-full overflow-y-auto rounded-2xl border border-blue-200/20 bg-slate-950/90 p-4 text-blue-50 shadow-2xl shadow-black/40 backdrop-blur-xl sm:max-h-none sm:bg-white/[.075] sm:p-5"
         >
           <div className="mb-3 flex items-center justify-between gap-3">
             <div className="min-w-0">
@@ -310,16 +310,16 @@ function FloatingCJBot() {
   };
 
   return (
-    <aside className="fixed bottom-4 right-4 z-[70] flex flex-col items-end gap-3">
+    <aside className="fixed bottom-2 right-2 z-[70] flex flex-col items-end gap-2 sm:bottom-4 sm:right-4 sm:gap-3">
       {isOpen&&(
-        <section aria-label="CJ Bot chat" className="flex h-[min(44rem,calc(100dvh-6.5rem))] w-[min(28rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-[1.65rem] border border-blue-200/70 bg-white text-slate-900 shadow-[0_24px_80px_-20px_rgba(2,20,55,.65)]">
-          <header className="relative flex shrink-0 items-center gap-3 overflow-hidden bg-gradient-to-r from-[#0754B8] via-[#0875D1] to-[#0754B8] px-5 py-4 text-white">
+        <section aria-label="CJ Bot chat" className="flex h-[min(44rem,calc(100dvh-5rem))] w-[calc(100vw-1rem)] max-w-[28rem] flex-col overflow-hidden rounded-2xl border border-blue-200/70 bg-white text-slate-900 shadow-[0_24px_80px_-20px_rgba(2,20,55,.65)] sm:h-[min(44rem,calc(100dvh-6.5rem))] sm:w-[min(28rem,calc(100vw-2rem))] sm:rounded-[1.65rem]">
+          <header className="relative flex shrink-0 items-center gap-2.5 overflow-hidden bg-gradient-to-r from-[#0754B8] via-[#0875D1] to-[#0754B8] px-3.5 py-3 text-white sm:gap-3 sm:px-5 sm:py-4">
             <div className="pointer-events-none absolute -right-8 -top-12 h-36 w-36 rounded-full border border-white/10"/>
             <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/15 text-2xl shadow-inner" aria-hidden="true">⚖️</div>
             <div className="relative min-w-0 flex-1"><p className="text-base font-extrabold leading-tight tracking-tight">CJ Bot</p><p className="mt-1 flex items-center gap-1.5 text-xs text-blue-100"><span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,.8)]"/> Cyber Justice · Website assistant</p></div>
             <button type="button" onClick={()=>setIsOpen(false)} aria-label="Close CJ Bot" className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-2xl transition hover:bg-white/25">×</button>
           </header>
-          <div className="flex-1 space-y-4 overflow-y-auto bg-[radial-gradient(ellipse_at_top,_#eff6ff_0%,_#f8fbff_48%,_#f1f5f9_100%)] px-4 py-5">
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain bg-[radial-gradient(ellipse_at_top,_#eff6ff_0%,_#f8fbff_48%,_#f1f5f9_100%)] px-3 py-3 sm:space-y-4 sm:px-4 sm:py-5">
             <div className="mb-1 flex items-center gap-2 px-1"><span className="h-px flex-1 bg-blue-200/70"/><span className="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-400">Your enquiry starts here</span><span className="h-px flex-1 bg-blue-200/70"/></div>
             {messages.map((message,index)=>(
               <div key={index} className={message.from==="visitor"?"flex justify-end":"flex items-start gap-2"}>
@@ -327,8 +327,8 @@ function FloatingCJBot() {
                 <div className={message.from==="visitor"?"max-w-[86%] rounded-2xl rounded-br-md bg-gradient-to-br from-blue-600 to-blue-700 px-4 py-3 text-sm leading-relaxed text-white shadow-md shadow-blue-900/10":"max-w-[89%] rounded-2xl rounded-tl-md border border-blue-100 bg-white/90 px-4 py-3 text-sm leading-relaxed text-slate-700 shadow-sm"}>{message.text}</div>
               </div>
             ))}
-            {choices.length>0&&<div className="ml-10 space-y-2">{choices.map(choice=><button key={choice} type="button" onClick={()=>handleChoice(choice)} className="group w-full rounded-xl border border-blue-200/90 bg-white px-3.5 py-3 text-left text-[0.84rem] font-semibold leading-snug text-blue-700 shadow-[0_2px_8px_rgba(15,70,130,.04)] transition hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"><span className="flex items-center justify-between gap-2"><span>{choice}</span><span className="text-blue-300 transition group-hover:translate-x-0.5 group-hover:text-blue-600" aria-hidden="true">›</span></span></button>)}</div>}
-            {stage==="lead-form"&&<form onSubmit={event=>{event.preventDefault();setStage("complete");setMailReady(true);addBot("Thank you. Your enquiry is ready. Select “Send message” below to open your email app with the details filled in. Please review and send it to complete your request.");}} className="ml-10 space-y-3 rounded-2xl border border-blue-100 bg-white/95 p-4 shadow-sm">
+            {choices.length>0&&<div className="ml-0 space-y-2 sm:ml-10">{choices.map(choice=><button key={choice} type="button" onClick={()=>handleChoice(choice)} className="group w-full rounded-xl border border-blue-200/90 bg-white px-3.5 py-3 text-left text-[0.84rem] font-semibold leading-snug text-blue-700 shadow-[0_2px_8px_rgba(15,70,130,.04)] transition hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"><span className="flex items-center justify-between gap-2"><span>{choice}</span><span className="text-blue-300 transition group-hover:translate-x-0.5 group-hover:text-blue-600" aria-hidden="true">›</span></span></button>)}</div>}
+            {stage==="lead-form"&&<form onSubmit={event=>{event.preventDefault();setStage("complete");setMailReady(true);addBot("Thank you. Your enquiry is ready. Select “Send message” below to open your email app with the details filled in. Please review and send it to complete your request.");}} className="ml-0 space-y-2.5 rounded-2xl border border-blue-100 bg-white/95 p-3 shadow-sm sm:ml-10 sm:space-y-3 sm:p-4">
               <p className="text-sm leading-relaxed text-slate-700">📩 Great! Please fill out the form below and our team will get back to you within 24 hours. All consultations are confidential.</p>
               <input required value={lead.name} onChange={event=>setLead(current=>({...current,name:event.target.value}))} placeholder="Your name" aria-label="Your name" className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100"/>
               <input required type="email" value={lead.email} onChange={event=>setLead(current=>({...current,email:event.target.value}))} placeholder="Email address" aria-label="Email address" className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100"/>
@@ -337,7 +337,7 @@ function FloatingCJBot() {
               <p className="text-[0.68rem] leading-relaxed text-slate-500">Enquiry topic: <span className="font-semibold text-blue-700">{lead.service}</span>. Please do not include passwords, private keys, recovery phrases or one-time codes.</p>
               <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3.5 text-sm font-bold text-white shadow-md shadow-blue-900/15 transition hover:from-blue-700 hover:to-blue-800">➤ Send Message</button>
             </form>}
-            {mailReady&&<div className="ml-10 rounded-xl border border-emerald-200 bg-emerald-50 p-3"><p className="text-xs leading-relaxed text-emerald-900">Your email app will open with the enquiry details filled in. Please review and send it to complete your request.</p><a href={mailHref} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-800">Open enquiry email <span aria-hidden="true">↗</span></a></div>}
+            {mailReady&&<div className="ml-0 rounded-xl border border-emerald-200 bg-emerald-50 p-3 sm:ml-10"><p className="text-xs leading-relaxed text-emerald-900">Your email app will open with the enquiry details filled in. Please review and send it to complete your request.</p><a href={mailHref} className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-800">Open enquiry email <span aria-hidden="true">↗</span></a></div>}
           </div>
           {stage!=="lead-form"&&stage!=="complete"&&<form onSubmit={event=>{event.preventDefault();sendMessage();}} className="shrink-0 border-t border-blue-100 bg-white/95 p-3">
             <div className="flex items-center gap-2 rounded-full border border-blue-200 bg-slate-50 p-1.5 pl-4 transition focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100">
@@ -349,7 +349,7 @@ function FloatingCJBot() {
           <div className="flex shrink-0 items-center justify-between border-t border-slate-100 bg-slate-50 px-4 py-2"><span className="text-[0.65rem] text-slate-500">Need a fresh start?</span><button type="button" onClick={resetChat} className="text-xs font-semibold text-blue-700 hover:underline">Restart chat</button></div>
         </section>
       )}
-      <button type="button" aria-expanded={isOpen} onClick={()=>setIsOpen(open=>!open)} className="group flex items-center gap-2.5 rounded-full border border-blue-300/40 bg-gradient-to-r from-blue-700 to-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-xl shadow-blue-950/30 transition hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-blue-950/30 focus:outline-none focus:ring-2 focus:ring-blue-300">
+      <button type="button" aria-expanded={isOpen} onClick={()=>setIsOpen(open=>!open)} className="group flex items-center gap-2 rounded-full border border-blue-300/40 bg-gradient-to-r from-blue-700 to-blue-600 px-3.5 py-3 text-xs font-bold text-white shadow-xl shadow-blue-950/30 transition hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-blue-950/30 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:gap-2.5 sm:px-5 sm:py-3.5 sm:text-sm">
         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 text-base" aria-hidden="true">⚖️</span><span>{isOpen?"Close CJ Bot":"Chat with CJ Bot"}</span>{!isOpen&&<span className="ml-0.5 h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,.8)]"/>}
       </button>
     </aside>
