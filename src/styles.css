@@ -272,7 +272,7 @@
   }
 
   #top > div > div > a {
-    justify-content: center;
+    display: block;
     text-align: center;
   }
 
@@ -281,6 +281,12 @@
     justify-content: center;
     text-align: center;
     line-height: 1.55;
+  }
+
+  #top > div > p:last-child svg {
+    display: inline-block;
+    margin-right: 0.35rem;
+    vertical-align: -0.2rem;
   }
 
   #services,
