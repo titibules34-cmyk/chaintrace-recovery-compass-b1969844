@@ -188,12 +188,16 @@ function FloatingCJBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<CJMessage[]>([
-    { from: "bot", text: "Hello! I'm CJ Bot, the Cyber Justice Recovery assistant. I can help you understand common crypto-scam situations and the information you may want to gather. What would you like help with?" },
+    { from: "bot", text: "Welcome to Cyber Justice Recovery. I'm CJ Bot, your virtual guide. I can help you understand common digital-asset scams, organise useful information and find the right next step. How can I help today?" },
   ]);
   const [choices, setChoices] = useState([
-    "I lost crypto to a scam",
-    "Tell me about CJR services",
-    "Where are you located?",
+    "💰 I lost crypto to a scam",
+    "🔎 I need help tracing a transaction",
+    "🔒 My funds or account are frozen",
+    "📋 I want to check an existing case",
+    "🛡️ Tell me about CJR services",
+    "📍 Where are you located?",
+    "👤 Speak to the recovery team",
   ]);
 
   const addVisitorMessage = (text: string) =>
@@ -203,31 +207,40 @@ function FloatingCJBot() {
 
   const handleChoice = (choice: string) => {
     addVisitorMessage(choice);
-    if (choice === "I lost crypto to a scam") {
-      addBotMessage("I'm sorry this happened. Let's narrow down what happened. Which type of situation best describes it?");
+    if (choice.includes("lost crypto")) {
+      addBotMessage("I'm sorry this happened. You're in the right place to learn about possible next steps. What type of situation best describes it?");
       setChoices([
-        "Fake crypto exchange / rug pull",
-        "Romance / pig butchering scam",
-        "Fake investment platform",
-        "NFT / wallet hack",
-        "Phishing or impersonation",
-        "Something else",
+        "🪙 Fake crypto exchange / rug pull",
+        "💔 Romance / pig-butchering scam",
+        "📈 Fake investment platform",
+        "🎭 NFT / wallet hack",
+        "🎣 Phishing or impersonation",
+        "❔ Something else",
       ]);
-    } else if (choice === "Tell me about CJR services") {
-      addBotMessage("Cyber Justice Recovery provides information and assistance for people affected by suspected digital-asset scams. Support may include understanding transaction records, organising evidence and discussing possible next steps. No recovery outcome can be guaranteed.");
-      setChoices(["I lost crypto to a scam", "What information should I prepare?", "Speak to the team"]);
-    } else if (choice === "Where are you located?") {
-      addBotMessage("For the team's current location and contact details, please use the Contact page on this website. I don't want to guess or give you an unverified address.");
-      setChoices(["I lost crypto to a scam", "Tell me about CJR services", "Speak to the team"]);
-    } else if (choice === "Speak to the team") {
-      addBotMessage("For direct assistance, please use the website's Contact page. Avoid posting private account details here.");
-      setChoices(["What information should I prepare?", "I lost crypto to a scam"]);
-    } else if (choice === "What information should I prepare?") {
-      addBotMessage("You can safely gather the approximate date, the amount and currency, the platform or wallet involved, public wallet addresses, transaction IDs (TXIDs), and screenshots of relevant messages. Never share passwords, one-time codes, private keys or your recovery phrase.");
-      setChoices(["Speak to the team", "I lost crypto to a scam"]);
+    } else if (choice.includes("Fake crypto") || choice.includes("Romance") || choice.includes("Fake investment") || choice.includes("NFT") || choice.includes("Phishing") || choice.includes("Something else")) {
+      addBotMessage("Thank you for explaining. If it is safe to do so, preserve the messages, website details, payment records and any transaction IDs. A transaction ID and public wallet address can help someone review the on-chain activity. I can't confirm whether funds can be recovered or guarantee an outcome through this chat.");
+      setChoices(["🧾 What information should I prepare?", "🔎 I need help tracing a transaction", "👤 Speak to the recovery team"]);
+    } else if (choice.includes("tracing a transaction")) {
+      addBotMessage("Transaction tracing starts with reliable records. You may want to gather the transaction ID (TXID), public sending and receiving wallet addresses, blockchain network, approximate date and amount. A public transaction ID is different from a private key. Never share your seed phrase or wallet password.");
+      setChoices(["🧾 What information should I prepare?", "💰 I lost crypto to a scam", "👤 Speak to the recovery team"]);
+    } else if (choice.includes("funds or account are frozen")) {
+      addBotMessage("That sounds stressful. Keep any messages from the platform, the date the restriction began and any relevant account or transaction references. Be cautious of anyone demanding an extra payment or promising guaranteed release of funds. For help with your specific circumstances, contact the team through the website.");
+      setChoices(["🧾 What information should I prepare?", "🛡️ Tell me about CJR services", "👤 Speak to the recovery team"]);
+    } else if (choice.includes("existing case")) {
+      addBotMessage("For privacy, CJ Bot can't access case files or verify your case status. Please use the contact details on this website and include your existing case reference. Don't post identity documents or sensitive account details in this chat.");
+      setChoices(["📍 Where are you located?", "👤 Speak to the recovery team"]);
+    } else if (choice.includes("CJR services")) {
+      addBotMessage("Cyber Justice Recovery offers information and assistance for people affected by suspected digital-asset scams. Depending on the circumstances, this may include helping you understand transaction records, organise supporting evidence and consider possible next steps. Every case is different; no recovery outcome or timeframe can be guaranteed.");
+      setChoices(["💰 I lost crypto to a scam", "🔎 I need help tracing a transaction", "🧾 What information should I prepare?"]);
+    } else if (choice.includes("located")) {
+      addBotMessage("For the team's current office location and contact information, please visit the Contact page on this website. I don't want to guess or provide an unverified address.");
+      setChoices(["🛡️ Tell me about CJR services", "👤 Speak to the recovery team"]);
+    } else if (choice.includes("information should I prepare")) {
+      addBotMessage("Useful records may include: the approximate date and amount, currency, platform or wallet name, public wallet addresses, transaction IDs (TXIDs), screenshots of messages and any report reference. Please redact personal information where possible. Never share passwords, one-time codes, private keys or your recovery phrase.");
+      setChoices(["🔎 I need help tracing a transaction", "💰 I lost crypto to a scam", "👤 Speak to the recovery team"]);
     } else {
-      addBotMessage("Thanks for explaining. Keep any transaction IDs, public wallet addresses and relevant messages. Do not send passwords, private keys, recovery phrases or one-time codes. For a review of your specific situation, please contact the team through the website.");
-      setChoices(["What information should I prepare?", "Speak to the team", "I lost crypto to a scam"]);
+      addBotMessage("For direct assistance with your situation, please use the Contact page on this website. If you already have a case reference, include it there. Please don't send passwords, private keys, recovery phrases or one-time codes.");
+      setChoices(["🧾 What information should I prepare?", "💰 I lost crypto to a scam"]);
     }
   };
 
@@ -236,8 +249,8 @@ function FloatingCJBot() {
     if (!text) return;
     addVisitorMessage(text);
     setDraft("");
-    addBotMessage("Thank you for sharing that. I can provide general guidance, but I can't verify transactions or assess recovery prospects from a chat message. Please keep your transaction records and contact the team through the website. Never share passwords, private keys, recovery phrases or one-time codes.");
-    setChoices(["What information should I prepare?", "Speak to the team", "I lost crypto to a scam"]);
+    addBotMessage("Thank you for sharing that. I can offer general information, but I can't verify transactions, access case files or assess recovery prospects from this chat. Keep relevant records and contact the team through the website for a case-specific review. Never share passwords, one-time codes, private keys or recovery phrases.");
+    setChoices(["🧾 What information should I prepare?", "🔎 I need help tracing a transaction", "👤 Speak to the recovery team"]);
   };
 
   return (
@@ -245,28 +258,34 @@ function FloatingCJBot() {
       {isOpen && (
         <section
           aria-label="CJ Bot chat"
-          className="flex h-[min(42rem,calc(100dvh-7rem))] w-[min(27rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-[1.7rem] border border-blue-200/70 bg-white text-slate-900 shadow-2xl shadow-slate-950/30"
+          className="flex h-[min(44rem,calc(100dvh-6.5rem))] w-[min(28rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-[1.65rem] border border-blue-200/70 bg-white text-slate-900 shadow-[0_24px_80px_-20px_rgba(2,20,55,.65)]"
         >
-          <header className="flex shrink-0 items-center gap-3 bg-gradient-to-r from-blue-700 to-blue-600 px-5 py-4 text-white">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/20 text-xl" aria-hidden="true">⚖️</div>
-            <div className="min-w-0 flex-1">
-              <p className="font-bold leading-tight">CJ Bot</p>
+          <header className="relative flex shrink-0 items-center gap-3 overflow-hidden bg-gradient-to-r from-[#0754B8] via-[#0875D1] to-[#0754B8] px-5 py-4 text-white">
+            <div className="pointer-events-none absolute -right-8 -top-12 h-36 w-36 rounded-full border border-white/10" />
+            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/15 text-2xl shadow-inner" aria-hidden="true">⚖️</div>
+            <div className="relative min-w-0 flex-1">
+              <p className="text-base font-extrabold leading-tight tracking-tight">CJ Bot</p>
               <p className="mt-1 flex items-center gap-1.5 text-xs text-blue-100">
-                <span className="h-2 w-2 rounded-full bg-emerald-400" /> Cyber Justice Recovery · Always available
+                <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,.8)]" /> Cyber Justice Recovery · Virtual assistant
               </p>
             </div>
-            <button type="button" onClick={() => setIsOpen(false)} aria-label="Close CJ Bot" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-2xl transition hover:bg-white/25">×</button>
+            <button type="button" onClick={() => setIsOpen(false)} aria-label="Close CJ Bot" className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-2xl transition hover:bg-white/25">×</button>
           </header>
 
-          <div className="flex-1 space-y-4 overflow-y-auto bg-gradient-to-b from-blue-50 to-slate-50 px-4 py-5">
+          <div className="flex-1 space-y-4 overflow-y-auto bg-[radial-gradient(ellipse_at_top,_#eff6ff_0%,_#f8fbff_48%,_#f1f5f9_100%)] px-4 py-5">
+            <div className="mb-1 flex items-center gap-2 px-1">
+              <span className="h-px flex-1 bg-blue-200/70" />
+              <span className="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-blue-400">Your recovery support starts here</span>
+              <span className="h-px flex-1 bg-blue-200/70" />
+            </div>
             {messages.map((message, index) => (
               <div key={index} className={message.from === "visitor" ? "flex justify-end" : "flex items-start gap-2"}>
                 {message.from === "bot" && (
-                  <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm text-white" aria-hidden="true">⚖</span>
+                  <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-blue-200 bg-gradient-to-br from-blue-600 to-blue-800 text-sm text-white shadow-sm" aria-hidden="true">⚖</span>
                 )}
                 <div className={message.from === "visitor"
-                  ? "max-w-[84%] rounded-2xl rounded-br-md bg-blue-600 px-4 py-3 text-sm leading-relaxed text-white shadow-sm"
-                  : "max-w-[88%] rounded-2xl rounded-tl-md border border-blue-100 bg-blue-50 px-4 py-3 text-sm leading-relaxed text-slate-700"}>
+                  ? "max-w-[86%] rounded-2xl rounded-br-md bg-gradient-to-br from-blue-600 to-blue-700 px-4 py-3 text-sm leading-relaxed text-white shadow-md shadow-blue-900/10"
+                  : "max-w-[89%] rounded-2xl rounded-tl-md border border-blue-100 bg-white/90 px-4 py-3 text-sm leading-relaxed text-slate-700 shadow-sm"}>
                   {message.text}
                 </div>
               </div>
@@ -274,26 +293,30 @@ function FloatingCJBot() {
             {choices.length > 0 && (
               <div className="ml-10 space-y-2">
                 {choices.map((choice) => (
-                  <button key={choice} type="button" onClick={() => handleChoice(choice)} className="w-full rounded-xl border border-blue-200 bg-white px-3.5 py-3 text-left text-sm font-semibold text-blue-700 shadow-sm transition hover:border-blue-400 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    {choice}
+                  <button key={choice} type="button" onClick={() => handleChoice(choice)} className="group w-full rounded-xl border border-blue-200/90 bg-white px-3.5 py-3 text-left text-[0.84rem] font-semibold leading-snug text-blue-700 shadow-[0_2px_8px_rgba(15,70,130,.04)] transition hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <span className="flex items-center justify-between gap-2">
+                      <span>{choice}</span>
+                      <span className="text-blue-300 transition group-hover:translate-x-0.5 group-hover:text-blue-600" aria-hidden="true">›</span>
+                    </span>
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          <form onSubmit={(event) => { event.preventDefault(); sendMessage(); }} className="shrink-0 border-t border-blue-100 bg-white p-3">
-            <div className="flex items-center gap-2">
-              <input value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Type your message..." aria-label="Type your message to CJ Bot" className="min-w-0 flex-1 rounded-full border border-blue-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
-              <button type="submit" aria-label="Send message" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xl font-bold text-white transition hover:bg-blue-700">➤</button>
+          <form onSubmit={(event) => { event.preventDefault(); sendMessage(); }} className="shrink-0 border-t border-blue-100 bg-white/95 p-3">
+            <div className="flex items-center gap-2 rounded-full border border-blue-200 bg-slate-50 p-1.5 pl-4 transition focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100">
+              <input value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Type your message..." aria-label="Type your message to CJ Bot" className="min-w-0 flex-1 bg-transparent py-2 text-sm text-slate-800 outline-none placeholder:text-slate-400" />
+              <button type="submit" aria-label="Send message" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-lg font-bold text-white shadow-md shadow-blue-900/20 transition hover:scale-105 hover:from-blue-700 hover:to-blue-800">➤</button>
             </div>
-            <p className="mt-2 text-center text-[0.68rem] leading-relaxed text-slate-500">🔒 Never share passwords, private keys or recovery phrases.</p>
+            <p className="mt-2 flex items-center justify-center gap-1.5 text-center text-[0.66rem] leading-relaxed text-slate-500"><span aria-hidden="true">🔒</span> Never share passwords, private keys or recovery phrases.</p>
           </form>
         </section>
       )}
-      <button type="button" aria-expanded={isOpen} onClick={() => setIsOpen((open) => !open)} className="flex items-center gap-2 rounded-full border border-blue-300/40 bg-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-xl shadow-blue-950/30 transition hover:-translate-y-0.5 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
-        <span className="text-lg" aria-hidden="true">⚖️</span>
+      <button type="button" aria-expanded={isOpen} onClick={() => setIsOpen((open) => !open)} className="group flex items-center gap-2.5 rounded-full border border-blue-300/40 bg-gradient-to-r from-blue-700 to-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-xl shadow-blue-950/30 transition hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-blue-950/30 focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 text-base" aria-hidden="true">⚖️</span>
         <span>{isOpen ? "Close CJ Bot" : "Chat with CJ Bot"}</span>
+        {!isOpen && <span className="ml-0.5 h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,.8)]" />}
       </button>
     </aside>
   );
